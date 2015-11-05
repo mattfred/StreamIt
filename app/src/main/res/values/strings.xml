@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">StreamIt</string>
     <string name="action_settings">Settings</string>
+    <string name="search_prompt">Enter Movie or Show Title</string>
+    <string name="search_button">Search</string>
+    <string name="search_empty_toast">Please enter a movie or show title.</string>
 </resources>
