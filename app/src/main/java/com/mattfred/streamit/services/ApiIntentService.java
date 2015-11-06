@@ -11,6 +11,7 @@ import com.mattfred.streamit.R;
 import com.mattfred.streamit.broadcast.BroadcastUtil;
 import com.mattfred.streamit.model.Results;
 import com.mattfred.streamit.utils.Constants;
+import com.mattfred.streamit.utils.Globals;
 import com.mattfred.streamit.utils.GuideBoxAPI;
 import com.mattfred.streamit.utils.StreamItPreferences;
 
@@ -44,6 +45,7 @@ public class ApiIntentService extends IntentService {
             GuideBoxAPI.getAPIService().performTitleSearch(region, apiKey, title, new Callback<Results>() {
                 @Override
                 public void success(Results results, Response response) {
+                    Globals.setResults(results);
                     LocalBroadcastManager.getInstance(ApiIntentService.this)
                             .sendBroadcast(BroadcastUtil.stop(ApiTask.TitleSearch));
                 }
