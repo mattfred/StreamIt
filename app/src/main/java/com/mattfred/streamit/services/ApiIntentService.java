@@ -5,8 +5,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.content.LocalBroadcastManager;
 
 import com.mattfred.streamit.R;
+import com.mattfred.streamit.broadcast.BroadcastUtil;
 import com.mattfred.streamit.model.Results;
 import com.mattfred.streamit.utils.Constants;
 import com.mattfred.streamit.utils.GuideBoxAPI;
@@ -42,12 +44,14 @@ public class ApiIntentService extends IntentService {
             GuideBoxAPI.getAPIService().performTitleSearch(region, apiKey, title, new Callback<Results>() {
                 @Override
                 public void success(Results results, Response response) {
-
+                    LocalBroadcastManager.getInstance(ApiIntentService.this)
+                            .sendBroadcast(BroadcastUtil.stop(ApiTask.TitleSearch));
                 }
 
                 @Override
                 public void failure(RetrofitError error) {
-
+                    LocalBroadcastManager.getInstance(ApiIntentService.this)
+                            .sendBroadcast(BroadcastUtil.error(ApiTask.TitleSearch));
                 }
             });
         }

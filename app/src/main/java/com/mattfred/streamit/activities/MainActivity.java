@@ -1,8 +1,12 @@
 package com.mattfred.streamit.activities;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -14,12 +18,16 @@ import android.widget.Toast;
 import com.google.common.base.Strings;
 import com.mattfred.streamit.ProgressDialog;
 import com.mattfred.streamit.R;
+import com.mattfred.streamit.broadcast.BroadcastUtil;
 import com.mattfred.streamit.services.ApiIntentService;
+import com.mattfred.streamit.services.ApiTask;
 
 public class MainActivity extends AppCompatActivity {
 
     private EditText searchBox;
     private ProgressDialog progressDialog;
+    private LocalBroadcastManager broadcastManager;
+    private BroadcastReceiver broadcastReceiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,6 +37,13 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         searchBox = (EditText) findViewById(R.id.et_search_box);
+        registerReceiver();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        removeReceiver();
     }
 
     @Override
@@ -82,5 +97,32 @@ public class MainActivity extends AppCompatActivity {
         if (progressDialog != null && progressDialog.isShowing()) {
             progressDialog.cancel();
         }
+    }
+
+    private void registerReceiver() {
+        broadcastManager = LocalBroadcastManager.getInstance(MainActivity.this);
+        broadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                hideProgress();
+                final ApiTask task = (ApiTask) intent.getSerializableExtra(BroadcastUtil.TASK);
+
+                if (BroadcastUtil.STOP.equals(intent.getAction())) {
+                    if (ApiTask.TitleSearch == task) {
+                        startActivity(new Intent(MainActivity.this, MovieListActivity.class));
+                    }
+                } else if (BroadcastUtil.ERROR.equals(intent.getAction())) {
+                    if (ApiTask.TitleSearch == task) {
+                        Toast.makeText(MainActivity.this, R.string.search_error, Toast.LENGTH_LONG).show();
+                    }
+                }
+            }
+        };
+        broadcastManager.registerReceiver(broadcastReceiver, BroadcastUtil.stopFilter());
+        broadcastManager.registerReceiver(broadcastReceiver, BroadcastUtil.errorFilter());
+    }
+
+    private void removeReceiver() {
+        broadcastManager.unregisterReceiver(broadcastReceiver);
     }
 }

@@ -29,6 +29,9 @@
             android:label="@string/title_activity_progress_dialog"
             android:theme="@style/AppTheme.NoActionBar" >
         </activity>
+        <activity android:name=".activities.MovieListActivity"
+            android:parentActivityName=".activities.MainActivity">
+        </activity>
     </application>
 
 </manifest>
