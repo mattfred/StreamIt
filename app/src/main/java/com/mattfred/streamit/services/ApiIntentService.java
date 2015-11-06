@@ -7,11 +7,10 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 
 import com.mattfred.streamit.R;
+import com.mattfred.streamit.model.Results;
 import com.mattfred.streamit.utils.Constants;
 import com.mattfred.streamit.utils.GuideBoxAPI;
 import com.mattfred.streamit.utils.StreamItPreferences;
-
-import org.json.JSONObject;
 
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -40,9 +39,9 @@ public class ApiIntentService extends IntentService {
 
         if (ApiTask.TitleSearch == task) {
             String title = intent.getStringExtra(TITLE);
-            GuideBoxAPI.getAPIService().performTitleSearch(region, apiKey, title, new Callback<JSONObject>() {
+            GuideBoxAPI.getAPIService().performTitleSearch(region, apiKey, title, new Callback<Results>() {
                 @Override
-                public void success(JSONObject jsonObject, Response response) {
+                public void success(Results results, Response response) {
 
                 }
 

@@ -1,6 +1,6 @@
 package com.mattfred.streamit.interfaces;
 
-import org.json.JSONObject;
+import com.mattfred.streamit.model.Results;
 
 import retrofit.Callback;
 import retrofit.http.GET;
@@ -12,6 +12,6 @@ import retrofit.http.Path;
 public interface RetrofitInterface {
 
     @GET("/{region}/{apiKey}/search/title/{searchTitle}/fuzzy")
-    void performTitleSearch(@Path("region") String region, @Path("apiKey") String apiKey, @Path("searchTitle") String searchTitle, Callback<JSONObject> cb);
+    void performTitleSearch(@Path("region") String region, @Path("apiKey") String apiKey, @Path("searchTitle") String searchTitle, Callback<Results> cb);
 
 }
