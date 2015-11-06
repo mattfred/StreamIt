@@ -11,24 +11,19 @@ import android.widget.Toast;
 
 import com.google.common.base.Strings;
 import com.mattfred.streamit.R;
-
-import butterknife.InjectView;
-import butterknife.OnClick;
+import com.mattfred.streamit.services.ApiIntentService;
 
 public class MainActivity extends AppCompatActivity {
 
-    @InjectView(R.id.et_search_box)
-    EditText searchBox;
+    private EditText searchBox;
 
-    @OnClick(R.id.btn_search)
-    void searchClicked(View v) {
+    public void searchClicked(View view) {
         if (validateSearchValue()) {
-
+            String title = searchBox.getText().toString();
+            ApiIntentService.titleSearch(MainActivity.this, title);
         } else {
             Toast.makeText(this, R.string.search_empty_toast, Toast.LENGTH_LONG).show();
         }
-
-
     }
 
     private boolean validateSearchValue() {
@@ -42,6 +37,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        searchBox = (EditText) findViewById(R.id.et_search_box);
     }
 
     @Override

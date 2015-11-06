@@ -36,6 +36,7 @@
         android:id="@+id/btn_search"
         android:layout_below="@+id/et_search_box"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="65dp" />
+        android:layout_marginTop="65dp"
+        android:onClick="searchClicked" />
 
 </RelativeLayout>
