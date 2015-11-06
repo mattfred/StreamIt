@@ -24,7 +24,6 @@ dependencies {
     testCompile 'junit:junit:4.12'
     compile 'com.android.support:appcompat-v7:23.1.0'
     compile 'com.android.support:design:23.1.0'
-    compile 'com.jakewharton:butterknife:6.1.0'
     compile 'com.google.guava:guava:19.0-rc2'
     compile 'com.squareup.retrofit:retrofit:1.7.0'
 }

@@ -1,5 +1,7 @@
 package com.mattfred.streamit.activities;
 
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -10,26 +12,14 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.google.common.base.Strings;
+import com.mattfred.streamit.ProgressDialog;
 import com.mattfred.streamit.R;
 import com.mattfred.streamit.services.ApiIntentService;
 
 public class MainActivity extends AppCompatActivity {
 
     private EditText searchBox;
-
-    public void searchClicked(View view) {
-        if (validateSearchValue()) {
-            String title = searchBox.getText().toString();
-            ApiIntentService.titleSearch(MainActivity.this, title);
-        } else {
-            Toast.makeText(this, R.string.search_empty_toast, Toast.LENGTH_LONG).show();
-        }
-    }
-
-    private boolean validateSearchValue() {
-       return !Strings.isNullOrEmpty(searchBox.getText().toString());
-    }
-
+    private ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,5 +51,36 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public void searchClicked(View view) {
+        if (validateSearchValue()) {
+            String title = searchBox.getText().toString();
+            showProgress(getString(R.string.searching));
+            ApiIntentService.titleSearch(MainActivity.this, title);
+        } else {
+            Toast.makeText(this, R.string.search_empty_toast, Toast.LENGTH_LONG).show();
+        }
+    }
+
+    private boolean validateSearchValue() {
+        return !Strings.isNullOrEmpty(searchBox.getText().toString());
+    }
+
+    private void showProgress(String message) {
+        if (progressDialog == null || !progressDialog.isShowing()) {
+            progressDialog = new ProgressDialog(MainActivity.this);
+            progressDialog.setText(message);
+            progressDialog.show();
+            progressDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        } else {
+            progressDialog.setText(message);
+        }
+    }
+
+    private void hideProgress() {
+        if (progressDialog != null && progressDialog.isShowing()) {
+            progressDialog.cancel();
+        }
     }
 }

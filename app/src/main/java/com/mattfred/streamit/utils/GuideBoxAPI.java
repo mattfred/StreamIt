@@ -12,7 +12,7 @@ public class GuideBoxAPI {
     public static RetrofitInterface getAPIService() {
         RestAdapter adapter = new RestAdapter.Builder()
                 .setEndpoint(Constants.BASE_URL)
-                .setLogLevel(RestAdapter.LogLevel.FULL)
+                .setLogLevel(RestAdapter.LogLevel.BASIC)
                 .build();
 
         return adapter.create(RetrofitInterface.class);

@@ -4,4 +4,7 @@
     <string name="search_prompt">Enter Movie or Show Title</string>
     <string name="search_button">Search</string>
     <string name="search_empty_toast">Please enter a movie or show title.</string>
+    <string name="title_activity_progress_dialog">ProgressDialog</string>
+    <string name="loading">Loading…</string>
+    <string name="searching">Searching…</string>
 </resources>
