@@ -1,6 +1,5 @@
 package com.mattfred.streamit.adapters;
 
-import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,7 +28,7 @@ public class MovieAdapter extends ArrayAdapter<Movie> {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
+        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View view = inflater.inflate(R.layout.item_movie, parent, false);
         Movie movie = movies.get(position);
         TextView textView = (TextView) view.findViewById(R.id.tv_movie_title);

@@ -7,15 +7,15 @@ import java.util.List;
  */
 public class Results {
 
-    private List<Movie> movies;
+    private List<Movie> results;
     private int total_results;
 
-    public List<Movie> getMovies() {
-        return movies;
+    public List<Movie> getResults() {
+        return results;
     }
 
-    public void setMovies(List<Movie> movies) {
-        this.movies = movies;
+    public void setResults(List<Movie> results) {
+        this.results = results;
     }
 
     public int getTotal_results() {
