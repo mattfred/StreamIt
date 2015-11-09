@@ -13,4 +13,7 @@ public class Constants {
 
     // available regions
     public static final String REGION_US = "us";
+
+    // Intent extras
+    public static final String MOVIE_POSITION = "moviePosition";
 }

@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.mattfred.streamit.R;
 import com.mattfred.streamit.model.Movie;
+import com.mattfred.streamit.model.MovieAndView;
 
 import java.io.InputStream;
 import java.net.URL;
@@ -64,12 +65,6 @@ public class MovieAdapter extends ArrayAdapter<Movie> {
         return view;
     }
 
-    class MovieAndView {
-        public Movie movie;
-        public View view;
-        public Bitmap bitmap;
-    }
-
     private class ImageLoader extends AsyncTask<MovieAndView, Void, MovieAndView> {
 
         @Override
@@ -78,7 +73,7 @@ public class MovieAdapter extends ArrayAdapter<Movie> {
             Movie movie = container.movie;
 
             try {
-                String imageUrl = movie.getArtwork_208x117();
+                String imageUrl = movie.getPoster_120x171();
                 InputStream in = (InputStream) new URL(imageUrl).getContent();
                 Bitmap bitmap = BitmapFactory.decodeStream(in);
                 in.close();

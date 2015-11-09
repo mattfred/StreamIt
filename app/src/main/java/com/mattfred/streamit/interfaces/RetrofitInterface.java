@@ -11,7 +11,7 @@ import retrofit.http.Path;
  */
 public interface RetrofitInterface {
 
-    @GET("/{region}/{apiKey}/search/title/{searchTitle}/fuzzy")
+    @GET("/{region}/{apiKey}/search/movie/title/{searchTitle}/fuzzy")
     void performTitleSearch(@Path("region") String region, @Path("apiKey") String apiKey, @Path("searchTitle") String searchTitle, Callback<Results> cb);
 
 }
