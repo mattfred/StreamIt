@@ -10,4 +10,6 @@
     <string name="search_error">An error occurred while search. Please try again.</string>
     <string name="movie_icon_placeholder">Movie Icon</string>
     <string name="movie_title_placeholder">Movie Title</string>
+
+    <string name="banner_ad_unit_id">ca-app-pub-1401987492890753/7754128224</string>
 </resources>

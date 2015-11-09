@@ -26,4 +26,5 @@ dependencies {
     compile 'com.android.support:design:23.1.0'
     compile 'com.google.guava:guava:19.0-rc2'
     compile 'com.squareup.retrofit:retrofit:1.7.0'
+    compile 'com.google.android.gms:play-services-ads:8.3.0'
 }
