@@ -80,6 +80,8 @@ public class MovieAdapter extends ArrayAdapter<Object> {
         return view;
     }
 
+
+
     private class ImageLoader extends AsyncTask<ResultAndView, Void, ResultAndView> {
 
         @Override

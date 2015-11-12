@@ -11,7 +11,8 @@ import android.widget.ListView;
 
 import com.mattfred.streamit.R;
 import com.mattfred.streamit.adapters.MovieAdapter;
-import com.mattfred.streamit.utils.Constants;
+import com.mattfred.streamit.model.Movie;
+import com.mattfred.streamit.model.Show;
 import com.mattfred.streamit.utils.Globals;
 
 import java.util.List;
@@ -52,8 +53,18 @@ public class MovieListActivity extends AppCompatActivity implements AdapterView.
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        Intent intent = new Intent(this, MovieDetails.class);
-        intent.putExtra(Constants.MOVIE_POSITION, position);
-        startActivity(intent);
+        Object object = objects.get(position);
+        if (object instanceof Movie) {
+            Movie movie = (Movie) object;
+            Globals.setBitmapURL(movie.getPoster_400x570());
+            Globals.setTitle(movie.getTitle());
+            Globals.setImdb_id(movie.getImdb_id());
+        } else {
+            Show show = (Show) object;
+            Globals.setBitmapURL(show.getArtwork_608x342());
+            Globals.setTitle(show.getTitle());
+            Globals.setImdb_id(show.getImdb_id());
+        }
+        startActivity(new Intent(this, MovieDetails.class));
     }
 }
