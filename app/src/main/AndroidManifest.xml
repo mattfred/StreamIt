@@ -47,24 +47,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.mattfred.streamit.activities.MovieListActivity" />
         </activity>
-        <activity
-            android:name=".ShowDetials"
-            android:label="@string/title_activity_show_detials"
-            android:parentActivityName=".activities.MovieListActivity"
-            android:theme="@style/AppTheme.NoActionBar" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.mattfred.streamit.activities.MovieListActivity" />
-        </activity>
-        <activity
-            android:name=".activities.ShowDetail"
-            android:label="@string/title_activity_show_detail"
-            android:parentActivityName=".activities.MovieListActivity"
-            android:theme="@style/AppTheme.NoActionBar" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.mattfred.streamit.activities.MovieListActivity" />
-        </activity>
     </application>
 
 </manifest>

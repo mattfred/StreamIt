@@ -24,7 +24,6 @@ import java.net.URL;
 public class MovieDetails extends AppCompatActivity {
 
     private AdView mAdView;
-    private TextView textView;
     private ImageView imageView;
 
     @Override
@@ -36,7 +35,7 @@ public class MovieDetails extends AppCompatActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        textView = (TextView) findViewById(R.id.tv_movie_title);
+        TextView textView = (TextView) findViewById(R.id.tv_movie_title);
         textView.setText(Globals.getTitle());
 
         imageView = (ImageView) findViewById(R.id.iv_movie_icon);

@@ -36,7 +36,6 @@ public class MainActivity extends AppCompatActivity {
     private BroadcastReceiver broadcastReceiver;
 
     private RadioButton movieRB;
-    private RadioButton showRB;
 
     private AdView mAdView;
 
@@ -55,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
 
         searchBox = (EditText) findViewById(R.id.et_search_box);
         movieRB = (RadioButton) findViewById(R.id.rd_movie);
-        showRB = (RadioButton) findViewById(R.id.rd_tvshow);
+        RadioButton showRB = (RadioButton) findViewById(R.id.rd_tvshow);
 
         registerReceiver();
     }

@@ -37,7 +37,7 @@ public class MovieListActivity extends AppCompatActivity implements AdapterView.
         updateDisplay();
     }
 
-    protected void updateDisplay() {
+    private void updateDisplay() {
         MovieAdapter adapter = new MovieAdapter(this, R.layout.item_movie, objects);
         listView.setAdapter(adapter);
     }

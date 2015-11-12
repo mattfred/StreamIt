@@ -26,10 +26,10 @@ import java.util.List;
  */
 public class MovieAdapter extends ArrayAdapter<Object> {
 
-    private Context context;
-    private List<Object> results;
+    private final Context context;
+    private final List<Object> results;
 
-    private LruCache<Integer, Bitmap> imageCache;
+    private final LruCache<Integer, Bitmap> imageCache;
 
     public MovieAdapter(Context context, int resource, List<Object> objects) {
         super(context, resource, objects);
