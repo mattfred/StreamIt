@@ -1,12 +1,15 @@
 package com.mattfred.streamit.activities;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -49,6 +52,13 @@ public class MovieDetails extends AppCompatActivity {
     private void loadImage() {
         ImageLoader loader = new ImageLoader();
         loader.execute(Globals.getBitmapURL());
+    }
+
+    public void showIMDB(View view) {
+        String url = "http://www.imdb.com/title/" + Globals.getImdb_id();
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setData(Uri.parse(url));
+        startActivity(intent);
     }
 
     @Override

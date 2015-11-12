@@ -12,7 +12,7 @@ public class Movie implements Serializable {
     private int release_year;
     private String themoviedb;
     private String[] alternate_titles;
-    private String imdb_id;
+    private String imdb;
     private boolean pre_order;
     private String release_date;
     private String rating;
@@ -64,11 +64,11 @@ public class Movie implements Serializable {
     }
 
     public String getImdb_id() {
-        return imdb_id;
+        return imdb;
     }
 
     public void setImdb_id(String imdb_id) {
-        this.imdb_id = imdb_id;
+        this.imdb = imdb_id;
     }
 
     public boolean isPre_order() {
