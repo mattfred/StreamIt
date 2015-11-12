@@ -10,8 +10,11 @@ import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.mattfred.streamit.R;
 import com.mattfred.streamit.model.Movie;
+import com.mattfred.streamit.utils.Caster;
 import com.mattfred.streamit.utils.Constants;
 import com.mattfred.streamit.utils.Globals;
+
+import java.util.List;
 
 public class MovieDetails extends AppCompatActivity {
 
@@ -30,7 +33,7 @@ public class MovieDetails extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         textView = (TextView) findViewById(R.id.tv_movie_title);
-        imageView = (ImageView) findViewById(R.id.iv_movie_poster);
+        //imageView = (ImageView) findViewById(R.id.iv_movie_poster);
 
         mAdView = (AdView) findViewById(R.id.ad_view);
         AdRequest adRequest = new AdRequest.Builder()
@@ -38,7 +41,8 @@ public class MovieDetails extends AppCompatActivity {
                 .build();
         mAdView.loadAd(adRequest);
 
-        movie = Globals.getResults().getResults().get(getIntent().getIntExtra(Constants.MOVIE_POSITION, 0));
+        List<Movie> movies = Caster.castCollection(Globals.getResults(), Movie.class);
+        movie = movies.get(getIntent().getIntExtra(Constants.MOVIE_POSITION, 0));
     }
 
     @Override

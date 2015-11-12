@@ -6,11 +6,13 @@ import android.view.View;
 /**
  * Created by matthewfrederick on 11/8/15.
  */
-public class MovieAndView {
+public class ResultAndView {
 
     public Movie movie;
+    public Show show;
     public View view;
     public Bitmap bitmap;
+    public boolean isMovie;
 
     public Movie getMovie() {
         return movie;
@@ -34,5 +36,21 @@ public class MovieAndView {
 
     public void setBitmap(Bitmap bitmap) {
         this.bitmap = bitmap;
+    }
+
+    public Show getShow() {
+        return show;
+    }
+
+    public void setShow(Show show) {
+        this.show = show;
+    }
+
+    public boolean isMovie() {
+        return isMovie;
+    }
+
+    public void setIsMovie(boolean isMovie) {
+        this.isMovie = isMovie;
     }
 }

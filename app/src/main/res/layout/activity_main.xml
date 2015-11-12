@@ -27,15 +27,37 @@
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp" />
 
+    <RadioGroup
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_below="@+id/et_search_box"
+        android:layout_alignLeft="@+id/et_search_box"
+        android:layout_alignStart="@+id/et_search_box"
+        android:layout_marginTop="27dp">
+        <RadioButton
+            android:id="@+id/rd_movie"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/movie"
+            android:checked="true" />
+        <RadioButton
+            android:id="@+id/rd_tvshow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/tv_show"/>
+
+    </RadioGroup>
+
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/search_button"
         android:id="@+id/btn_search"
-        android:layout_below="@+id/et_search_box"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="65dp"
-        android:onClick="searchClicked" />
+        android:onClick="searchClicked"
+        android:layout_marginBottom="62dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true" />
 
     <com.google.android.gms.ads.AdView
         android:id="@+id/ad_view"

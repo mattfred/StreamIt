@@ -9,7 +9,9 @@ import android.support.v4.content.LocalBroadcastManager;
 
 import com.mattfred.streamit.R;
 import com.mattfred.streamit.broadcast.BroadcastUtil;
-import com.mattfred.streamit.model.Results;
+import com.mattfred.streamit.model.MovieResult;
+import com.mattfred.streamit.model.ShowResult;
+import com.mattfred.streamit.utils.Caster;
 import com.mattfred.streamit.utils.Constants;
 import com.mattfred.streamit.utils.Globals;
 import com.mattfred.streamit.utils.GuideBoxAPI;
@@ -40,20 +42,36 @@ public class ApiIntentService extends IntentService {
         String apiKey = getString(R.string.apiKey);
         ApiTask task = (ApiTask) intent.getSerializableExtra(TASK);
 
-        if (ApiTask.TitleSearch == task) {
+        if (ApiTask.MovieTitleSearch == task) {
             String title = intent.getStringExtra(TITLE);
-            GuideBoxAPI.getAPIService().performTitleSearch(region, apiKey, title, new Callback<Results>() {
+            GuideBoxAPI.getAPIService().performMovieTitleSearch(region, apiKey, title, new Callback<MovieResult>() {
                 @Override
-                public void success(Results results, Response response) {
-                    Globals.setResults(results);
+                public void success(MovieResult movieResult, Response response) {
+                    Globals.setResults(Caster.castCollection(movieResult.getResults(), Object.class));
                     LocalBroadcastManager.getInstance(ApiIntentService.this)
-                            .sendBroadcast(BroadcastUtil.stop(ApiTask.TitleSearch));
+                            .sendBroadcast(BroadcastUtil.stop(ApiTask.MovieTitleSearch));
                 }
 
                 @Override
                 public void failure(RetrofitError error) {
                     LocalBroadcastManager.getInstance(ApiIntentService.this)
-                            .sendBroadcast(BroadcastUtil.error(ApiTask.TitleSearch));
+                            .sendBroadcast(BroadcastUtil.error(ApiTask.MovieTitleSearch));
+                }
+            });
+        } else if (ApiTask.ShowTitleSearch == task) {
+            String title = intent.getStringExtra(TITLE);
+            GuideBoxAPI.getAPIService().performShowTitleSearch(region, apiKey, title, new Callback<ShowResult>() {
+                @Override
+                public void success(ShowResult showResult, Response response) {
+                    Globals.setResults(Caster.castCollection(showResult.getResults(), Object.class));
+                    LocalBroadcastManager.getInstance(ApiIntentService.this)
+                            .sendBroadcast(BroadcastUtil.stop(ApiTask.ShowTitleSearch));
+                }
+
+                @Override
+                public void failure(RetrofitError error) {
+                    LocalBroadcastManager.getInstance(ApiIntentService.this)
+                            .sendBroadcast(BroadcastUtil.error(ApiTask.ShowTitleSearch));
                 }
             });
         }
@@ -68,10 +86,17 @@ public class ApiIntentService extends IntentService {
         context.startService(intent);
     }
 
-    public static void titleSearch(Context context, String title) {
+    public static void movieTitleSearch(Context context, String title) {
         Bundle bundle = new Bundle(2);
         bundle.putString(TITLE, title);
-        bundle.putSerializable(TASK, ApiTask.TitleSearch);
+        bundle.putSerializable(TASK, ApiTask.MovieTitleSearch);
+        baseIntent(context, bundle);
+    }
+
+    public static void showTitleSearch(Context context, String title) {
+        Bundle bundle = new Bundle(2);
+        bundle.putString(TITLE, title);
+        bundle.putSerializable(TASK, ApiTask.ShowTitleSearch);
         baseIntent(context, bundle);
     }
 }

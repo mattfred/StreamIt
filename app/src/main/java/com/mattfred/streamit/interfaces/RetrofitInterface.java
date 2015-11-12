@@ -1,6 +1,7 @@
 package com.mattfred.streamit.interfaces;
 
-import com.mattfred.streamit.model.Results;
+import com.mattfred.streamit.model.MovieResult;
+import com.mattfred.streamit.model.ShowResult;
 
 import retrofit.Callback;
 import retrofit.http.GET;
@@ -12,6 +13,8 @@ import retrofit.http.Path;
 public interface RetrofitInterface {
 
     @GET("/{region}/{apiKey}/search/movie/title/{searchTitle}/fuzzy")
-    void performTitleSearch(@Path("region") String region, @Path("apiKey") String apiKey, @Path("searchTitle") String searchTitle, Callback<Results> cb);
+    void performMovieTitleSearch(@Path("region") String region, @Path("apiKey") String apiKey, @Path("searchTitle") String searchTitle, Callback<MovieResult> cb);
 
+    @GET("/{region}/{apiKey}/search/title/{searchTitle}/fuzzy")
+    void performShowTitleSearch(@Path("region") String region, @Path("apiKey") String apiKey, @Path("searchTitle") String searchTitle, Callback<ShowResult> cb);
 }

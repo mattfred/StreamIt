@@ -9,10 +9,12 @@ import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.RadioButton;
 import android.widget.Toast;
 
 import com.google.android.gms.ads.AdRequest;
@@ -26,10 +28,15 @@ import com.mattfred.streamit.services.ApiTask;
 
 public class MainActivity extends AppCompatActivity {
 
+    private static final String TAG = "MainActivity";
+
     private EditText searchBox;
     private ProgressDialog progressDialog;
     private LocalBroadcastManager broadcastManager;
     private BroadcastReceiver broadcastReceiver;
+
+    private RadioButton movieRB;
+    private RadioButton showRB;
 
     private AdView mAdView;
 
@@ -47,6 +54,9 @@ public class MainActivity extends AppCompatActivity {
         mAdView.loadAd(adRequest);
 
         searchBox = (EditText) findViewById(R.id.et_search_box);
+        movieRB = (RadioButton) findViewById(R.id.rd_movie);
+        showRB = (RadioButton) findViewById(R.id.rd_tvshow);
+
         registerReceiver();
     }
 
@@ -101,7 +111,14 @@ public class MainActivity extends AppCompatActivity {
         if (validateSearchValue()) {
             String title = searchBox.getText().toString();
             showProgress(getString(R.string.searching));
-            ApiIntentService.titleSearch(MainActivity.this, title);
+
+            if (movieRB.isChecked()) {
+                Log.i(TAG, "Movie Search");
+                ApiIntentService.movieTitleSearch(MainActivity.this, title);
+            } else {
+                Log.i(TAG, "Show Search");
+                ApiIntentService.showTitleSearch(MainActivity.this, title);
+            }
         } else {
             Toast.makeText(this, R.string.search_empty_toast, Toast.LENGTH_LONG).show();
         }
@@ -137,11 +154,13 @@ public class MainActivity extends AppCompatActivity {
                 final ApiTask task = (ApiTask) intent.getSerializableExtra(BroadcastUtil.TASK);
 
                 if (BroadcastUtil.STOP.equals(intent.getAction())) {
-                    if (ApiTask.TitleSearch == task) {
+                    if (ApiTask.MovieTitleSearch == task) {
+                        startActivity(new Intent(MainActivity.this, MovieListActivity.class));
+                    } else if (ApiTask.ShowTitleSearch == task) {
                         startActivity(new Intent(MainActivity.this, MovieListActivity.class));
                     }
                 } else if (BroadcastUtil.ERROR.equals(intent.getAction())) {
-                    if (ApiTask.TitleSearch == task) {
+                    if (ApiTask.MovieTitleSearch == task || ApiTask.ShowTitleSearch == task) {
                         Toast.makeText(MainActivity.this, R.string.search_error, Toast.LENGTH_LONG).show();
                     }
                 }

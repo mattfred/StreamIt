@@ -5,7 +5,7 @@ import java.util.List;
 /**
  * Created by Matthew on 11/5/2015.
  */
-public class Results {
+public class MovieResult {
 
     private List<Movie> results;
     private int total_results;
@@ -29,7 +29,7 @@ public class Results {
 
     @Override
     public String toString() {
-        return "Results{" +
+        return "MovieResult{" +
                 "total_results=" + total_results +
                 '}';
     }

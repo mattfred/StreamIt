@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">StreamIt</string>
     <string name="action_settings">Settings</string>
-    <string name="search_prompt">Enter Movie or Show Title</string>
+    <string name="search_prompt">Enter Title</string>
     <string name="search_button">Search</string>
     <string name="search_empty_toast">Please enter a movie or show title.</string>
     <string name="title_activity_progress_dialog">ProgressDialog</string>
@@ -10,6 +10,8 @@
     <string name="search_error">An error occurred while search. Please try again.</string>
     <string name="movie_icon_placeholder">Movie Icon</string>
     <string name="movie_title_placeholder">Movie Title</string>
+    <string name="movie">Movie</string>
+    <string name="tv_show">TV Show</string>
 
     <string name="banner_ad_unit_id">ca-app-pub-1401987492890753/7754128224</string>
     <string name="banner_ad_movie_detials_id">ca-app-pub-1401987492890753/1567993827</string>

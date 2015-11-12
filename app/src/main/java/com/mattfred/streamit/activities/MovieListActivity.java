@@ -9,7 +9,6 @@ import android.widget.ListView;
 
 import com.mattfred.streamit.R;
 import com.mattfred.streamit.adapters.MovieAdapter;
-import com.mattfred.streamit.model.Movie;
 import com.mattfred.streamit.utils.Constants;
 import com.mattfred.streamit.utils.Globals;
 
@@ -18,13 +17,13 @@ import java.util.List;
 public class MovieListActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
 
     private ListView listView;
-    private List<Movie> movies;
+    private List<Object> objects;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movie_list);
-        movies = Globals.getResults().getResults();
+        objects = Globals.getResults();
 
         listView = (ListView) findViewById(R.id.list_view);
         listView.setOnItemClickListener(this);
@@ -32,7 +31,7 @@ public class MovieListActivity extends AppCompatActivity implements AdapterView.
     }
 
     protected void updateDisplay() {
-        MovieAdapter adapter = new MovieAdapter(this, R.layout.item_movie, movies);
+        MovieAdapter adapter = new MovieAdapter(this, R.layout.item_movie, objects);
         listView.setAdapter(adapter);
     }
 
