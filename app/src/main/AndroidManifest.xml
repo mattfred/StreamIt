@@ -36,7 +36,8 @@
             android:configChanges="orientation"
             android:parentActivityName=".activities.MainActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar" >
+            android:theme="@style/AppTheme.NoActionBar"
+            android:label="@string/results">
         </activity>
         <activity
             android:name=".activities.MovieDetails"
