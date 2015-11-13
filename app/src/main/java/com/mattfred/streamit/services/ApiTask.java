@@ -5,5 +5,6 @@ package com.mattfred.streamit.services;
  */
 public enum ApiTask {
     MovieTitleSearch,
-    ShowTitleSearch
+    ShowTitleSearch,
+    GetSources
 }

@@ -11,6 +11,7 @@ import com.mattfred.streamit.R;
 import com.mattfred.streamit.broadcast.BroadcastUtil;
 import com.mattfred.streamit.model.MovieResult;
 import com.mattfred.streamit.model.ShowResult;
+import com.mattfred.streamit.model.SourceResult;
 import com.mattfred.streamit.utils.Caster;
 import com.mattfred.streamit.utils.Constants;
 import com.mattfred.streamit.utils.Globals;
@@ -74,8 +75,19 @@ public class ApiIntentService extends IntentService {
                             .sendBroadcast(BroadcastUtil.error(ApiTask.ShowTitleSearch));
                 }
             });
-        }
+        } else if (ApiTask.GetSources == task) {
+            GuideBoxAPI.getAPIService().getSubscriptionSources(region, apiKey, new Callback<SourceResult>() {
+                @Override
+                public void success(SourceResult sourceResult, Response response) {
+                    Globals.setSources(sourceResult.getResults());
+                }
 
+                @Override
+                public void failure(RetrofitError error) {
+                    error.printStackTrace();
+                }
+            });
+        }
     }
 
     private static void baseIntent(Context context, @Nullable Bundle bundle) {
@@ -97,6 +109,12 @@ public class ApiIntentService extends IntentService {
         Bundle bundle = new Bundle(2);
         bundle.putString(TITLE, title);
         bundle.putSerializable(TASK, ApiTask.ShowTitleSearch);
+        baseIntent(context, bundle);
+    }
+
+    public static void getSubscriptionSources(Context context) {
+        Bundle bundle = new Bundle(1);
+        bundle.putSerializable(TASK, ApiTask.GetSources);
         baseIntent(context, bundle);
     }
 }

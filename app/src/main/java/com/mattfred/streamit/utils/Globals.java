@@ -1,5 +1,7 @@
 package com.mattfred.streamit.utils;
 
+import com.mattfred.streamit.model.SubscriptionSource;
+
 import java.util.List;
 
 /**
@@ -11,6 +13,7 @@ public class Globals {
     private static String bitmapURL;
     private static String title;
     private static String imdb_id;
+    private static List<SubscriptionSource> sources;
 
     public static List<Object> getResults() {
         return results;
@@ -42,5 +45,13 @@ public class Globals {
 
     public static void setImdb_id(String imdb_id) {
         Globals.imdb_id = imdb_id;
+    }
+
+    public static List<SubscriptionSource> getSources() {
+        return sources;
+    }
+
+    public static void setSources(List<SubscriptionSource> sources) {
+        Globals.sources = sources;
     }
 }

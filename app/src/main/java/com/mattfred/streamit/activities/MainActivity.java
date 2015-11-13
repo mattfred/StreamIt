@@ -48,6 +48,7 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
+        ApiIntentService.getSubscriptionSources(this);
 
         mAdView = (AdView) findViewById(R.id.ad_view);
         AdRequest adRequest = new AdRequest.Builder()
@@ -57,7 +58,6 @@ public class MainActivity extends AppCompatActivity {
 
         searchBox = (EditText) findViewById(R.id.et_search_box);
         movieRB = (RadioButton) findViewById(R.id.rd_movie);
-        RadioButton showRB = (RadioButton) findViewById(R.id.rd_tvshow);
 
         registerReceiver();
     }
