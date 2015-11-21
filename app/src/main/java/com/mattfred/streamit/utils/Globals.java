@@ -13,6 +13,9 @@ public class Globals {
     private static String bitmapURL;
     private static String title;
     private static String imdb_id;
+    private static int id;
+    private static boolean isMovie;
+
     private static List<SubscriptionSource> sources;
 
     public static List<Object> getResults() {
@@ -53,5 +56,21 @@ public class Globals {
 
     public static void setSources(List<SubscriptionSource> sources) {
         Globals.sources = sources;
+    }
+
+    public static int getId() {
+        return id;
+    }
+
+    public static void setId(int id) {
+        Globals.id = id;
+    }
+
+    public static boolean isMovie() {
+        return isMovie;
+    }
+
+    public static void setIsMovie(boolean isMovie) {
+        Globals.isMovie = isMovie;
     }
 }

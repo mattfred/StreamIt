@@ -59,11 +59,15 @@ public class MovieListActivity extends AppCompatActivity implements AdapterView.
             Globals.setBitmapURL(movie.getPoster_400x570());
             Globals.setTitle(movie.getTitle());
             Globals.setImdb_id(movie.getImdb_id());
+            Globals.setId(movie.getId());
+            Globals.setIsMovie(true);
         } else {
             Show show = (Show) object;
             Globals.setBitmapURL(show.getArtwork_608x342());
             Globals.setTitle(show.getTitle());
             Globals.setImdb_id(show.getImdb_id());
+            Globals.setId(show.getId());
+            Globals.setIsMovie(false);
         }
         startActivity(new Intent(this, MovieDetails.class));
     }

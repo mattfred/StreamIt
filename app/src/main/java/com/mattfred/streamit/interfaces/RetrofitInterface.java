@@ -1,5 +1,6 @@
 package com.mattfred.streamit.interfaces;
 
+import com.mattfred.streamit.model.MovieInfo;
 import com.mattfred.streamit.model.MovieResult;
 import com.mattfred.streamit.model.ShowResult;
 import com.mattfred.streamit.model.SourceResult;
@@ -21,4 +22,10 @@ public interface RetrofitInterface {
 
     @GET("/{region}/{apiKey}/sources/subscription")
     void getSubscriptionSources(@Path("region") String region, @Path("apiKey") String apiKey, Callback<SourceResult> cb);
+
+    @GET("/{region}/{apiKey}/movie/{id}")
+    void getMovieDetials(@Path("region") String region, @Path("apiKey") String apiKey, @Path("id") String id, Callback<MovieInfo> cb);
+
+    @GET("/{region}/{apiKey}/show/{id}")
+    void getShowDetials(@Path("region") String region, @Path("apiKey") String apiKey, @Path("id") String id, Callback<MovieInfo> cb);
 }

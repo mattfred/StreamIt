@@ -22,4 +22,5 @@
     <string name="title_activity_show_detials">ShowDetials</string>
     <string name="title_activity_show_detail">ShowDetail</string>
     <string name="results">Results</string>
+    <string name="available_at">Avaliable to watch at:</string>
 </resources>
