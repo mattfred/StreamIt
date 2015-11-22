@@ -1,5 +1,7 @@
 package com.mattfred.streamit.activities;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -10,16 +12,15 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.mattfred.streamit.R;
 import com.mattfred.streamit.model.MovieInfo;
-import com.mattfred.streamit.model.Source;
 import com.mattfred.streamit.utils.Constants;
 import com.mattfred.streamit.utils.Globals;
 import com.mattfred.streamit.utils.GuideBoxAPI;
@@ -33,10 +34,13 @@ import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
-public class MovieDetails extends AppCompatActivity {
+public class MovieDetails extends AppCompatActivity implements View.OnClickListener {
 
     private AdView mAdView;
     private ImageView imageView;
+    private Button free, subscription, paid;
+    private MovieInfo info;
+    private ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,14 +51,33 @@ public class MovieDetails extends AppCompatActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        if (Globals.isMovie()) {
-            getDetails();
-        } else {
-            getShowDetials();
-        }
-
         TextView textView = (TextView) findViewById(R.id.tv_movie_title);
         textView.setText(Globals.getTitle());
+
+        free = (Button) findViewById(R.id.btn_free);
+        free.setClickable(false);
+        free.setOnClickListener(this);
+
+        subscription = (Button) findViewById(R.id.btn_subscription);
+        subscription.setClickable(false);
+        subscription.setOnClickListener(this);
+
+        paid = (Button) findViewById(R.id.btn_paid);
+        paid.setClickable(false);
+        paid.setOnClickListener(this);
+
+        progressBar = (ProgressBar) findViewById(R.id.progress_bar);
+        progressBar.setVisibility(View.VISIBLE);
+
+        if (Globals.isMovie()) {
+            getDetails();
+            subscription.setVisibility(View.VISIBLE);
+            paid.setVisibility(View.VISIBLE);
+        } else {
+            getShowDetails();
+            subscription.setVisibility(View.INVISIBLE);
+            paid.setVisibility(View.INVISIBLE);
+        }
 
         imageView = (ImageView) findViewById(R.id.iv_movie_icon);
         loadImage();
@@ -111,22 +134,67 @@ public class MovieDetails extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private void setupListView(List<Source> movieInfo) {
-        String[] sources;
-        if (movieInfo.size() < 1) {
-            sources = new String[]{"No Online Streaming Available."};
+    private void setupButtonText() {
+        if (Globals.isMovie()) {
+            free.setText("Free Sources: " + info.getFree_web_sources().size());
+            free.setEnabled(true);
+
+            subscription.setText("Subscription Sources: " + info.getSubscription_web_sources().size());
+            subscription.setEnabled(true);
+
+            paid.setText("Paid Sources: " + info.getPurchase_web_sources().size());
+            paid.setEnabled(true);
+
         } else {
-            sources = new String[movieInfo.size()];
-            for (int i = 0; i < movieInfo.size(); i++) {
-                Source source = movieInfo.get(i);
-                sources[i] = source.getDisplay_name();
+            free.setText("Channels: " + info.getChannels().size());
+        }
+    }
+
+    @Override
+    public void onClick(View v) {
+        if (v.getId() == free.getId()) {
+            if (Globals.isMovie()) {
+                showDialog(toStringArray(info.getFree_web_sources()));
+            } else {
+                showDialog(toStringArray(info.getChannels()));
             }
+        } else if (v.getId() == subscription.getId()) {
+            showDialog(toStringArray(info.getSubscription_web_sources()));
+        } else if (v.getId() == paid.getId()) {
+            showDialog(toStringArray(info.getPurchase_web_sources()));
+        }
+    }
+
+    private <T> String[] toStringArray(List<T> list) {
+
+        if (list.isEmpty()) {
+            return new String[]{"No sources available"};
         }
 
-        ListView listView = (ListView) findViewById(R.id.list_view);
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(MovieDetails.this,
-                R.layout.item_source, R.id.text_view, sources);
-        listView.setAdapter(adapter);
+        String[] array = new String[list.size()];
+
+        for (int i = 0; i < list.size(); i++) {
+            array[i] = list.get(i).toString();
+        }
+        return array;
+    }
+
+    private void showDialog(String[] array) {
+
+        AlertDialog dialog = new AlertDialog.Builder(MovieDetails.this)
+                .setTitle("Sources")
+                .setItems(array, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // don't do anything
+                    }
+                }).setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                }).create();
+        dialog.show();
     }
 
     private class ImageLoader extends AsyncTask<String, Void, Bitmap> {
@@ -150,6 +218,7 @@ public class MovieDetails extends AppCompatActivity {
         @Override
         protected void onPostExecute(Bitmap bitmap) {
             imageView.setImageBitmap(bitmap);
+            progressBar.setVisibility(View.INVISIBLE);
         }
     }
 
@@ -160,29 +229,31 @@ public class MovieDetails extends AppCompatActivity {
         GuideBoxAPI.getAPIService().getMovieDetials(region, apiKey, String.valueOf(Globals.getId()), new Callback<MovieInfo>() {
             @Override
             public void success(MovieInfo movieDetails, Response response) {
-                setupListView(movieDetails.getSubscription_web_sources());
+                info = movieDetails;
+                setupButtonText();
             }
 
             @Override
             public void failure(RetrofitError error) {
-
+                error.printStackTrace();
             }
         });
     }
 
-    private void getShowDetials() {
+    private void getShowDetails() {
         String region = StreamItPreferences.getString(MovieDetails.this, Constants.REGION, Constants.REGION_US);
         String apiKey = getString(R.string.apiKey);
 
         GuideBoxAPI.getAPIService().getShowDetials(region, apiKey, String.valueOf(Globals.getId()), new Callback<MovieInfo>() {
             @Override
             public void success(MovieInfo movieDetails, Response response) {
-
+                info = movieDetails;
+                setupButtonText();
             }
 
             @Override
             public void failure(RetrofitError error) {
-
+                error.printStackTrace();
             }
         });
     }

@@ -32,4 +32,9 @@ public class Source {
     public void setLink(String link) {
         this.link = link;
     }
+
+    @Override
+    public String toString() {
+        return display_name;
+    }
 }

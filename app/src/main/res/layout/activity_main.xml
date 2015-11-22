@@ -47,11 +47,7 @@
         android:layout_alignLeft="@+id/et_search_box"
         android:layout_alignStart="@+id/et_search_box"
         android:layout_marginTop="27dp"
-        android:visibility="invisible"
         android:id="@+id/radioGroup">
-
-        <!-- todo-->
-        <!-- set this to invisible until I figure out what to do about tv shows-->
 
         <RadioButton
             android:id="@+id/rd_movie"

@@ -1,18 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:layout_height="match_parent" android:fitsSystemWindows="true"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
     tools:context="com.mattfred.streamit.activities.MovieDetails">
 
-    <android.support.design.widget.AppBarLayout android:layout_height="wrap_content"
-        android:layout_width="match_parent" android:theme="@style/AppTheme.AppBarOverlay"
-        android:id="@+id/view2">
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/view2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay">
 
-        <android.support.v7.widget.Toolbar android:id="@+id/toolbar"
-            android:layout_width="match_parent" android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary" app:popupTheme="@style/AppTheme.PopupOverlay" />
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            app:popupTheme="@style/AppTheme.PopupOverlay" />
 
     </android.support.design.widget.AppBarLayout>
 
@@ -20,88 +26,103 @@
         android:id="@+id/ad_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
         android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
         app:adSize="BANNER"
         app:adUnitId="@string/banner_ad_movie_details_id" />
 
-    <ScrollView
+
+    <ImageView
+        android:id="@+id/iv_movie_icon"
+        android:layout_width="100dp"
+        android:layout_height="150dp"
+        android:contentDescription="@string/movie_icon"
+        android:layout_below="@+id/view2"
+        android:layout_alignLeft="@+id/imdb_btn"
+        android:layout_alignStart="@+id/imdb_btn"
+        android:layout_marginTop="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"/>
+
+    <ProgressBar
+        android:id="@+id/progress_bar"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_below="@+id/view2"
+        android:layout_alignLeft="@+id/imdb_btn"
+        android:layout_alignStart="@+id/imdb_btn"
+        android:layout_marginTop="66dp"
+        android:layout_marginLeft="41dp"
+        android:layout_marginStart="41dp"/>
+
+    <TextView
+        android:id="@+id/tv_movie_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/iv_movie_icon"
+        android:layout_marginBottom="55dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_toEndOf="@+id/iv_movie_icon"
+        android:layout_toRightOf="@+id/iv_movie_icon"
+        android:text="Large Text"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <Button
+        android:id="@+id/imdb_btn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/view2"
-        android:id="@+id/scrollView"
-        android:layout_above="@+id/ad_view">
+        android:layout_below="@+id/tv_movie_title"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="16dp"
+        android:background="@color/colorPrimary"
+        android:onClick="showIMDB"
+        android:text="@string/imdb_info"
+        android:textColor="#ffffff"
+        android:textSize="20sp" />
 
-    </ScrollView>
-
-    <RelativeLayout
+    <Button
+        android:id="@+id/btn_free"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/view2"
+        android:background="@color/colorPrimary"
+        android:onClick="showIMDB"
+        android:text="@string/loading"
+        android:textColor="#ffffff"
+        android:textSize="20sp"
+        android:layout_below="@+id/imdb_btn"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="16dp" />
+
+    <Button
+        android:id="@+id/btn_subscription"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        android:onClick="showIMDB"
+        android:text="@string/loading"
+        android:textColor="#ffffff"
+        android:textSize="20sp"
+        android:layout_below="@+id/btn_free"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_above="@+id/ad_view">
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp" />
 
-<ImageView
-    android:layout_width="100dp"
-    android:layout_height="150dp"
-    android:id="@+id/iv_movie_icon"
-    android:contentDescription="@string/movie_icon"
-    android:layout_alignParentLeft="true"
-    android:layout_alignParentStart="true"
-    android:layout_marginLeft="16dp"
-    android:layout_marginStart="16dp"
-    android:layout_marginTop="16dp" />
-
-<TextView
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:textAppearance="?android:attr/textAppearanceLarge"
-    android:text="Large Text"
-    android:id="@+id/tv_movie_title"
-    android:layout_marginBottom="55dp"
-    android:layout_alignBottom="@+id/iv_movie_icon"
-    android:layout_toRightOf="@+id/iv_movie_icon"
-    android:layout_toEndOf="@+id/iv_movie_icon"
-    android:layout_marginLeft="16dp"
-    android:layout_marginStart="16dp" />
-
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/imdb_info"
-            android:id="@+id/imdb_btn"
-            android:background="@color/colorPrimary"
-            android:textColor="#ffffff"
-            android:textSize="20sp"
-            android:onClick="showIMDB"
-            android:layout_below="@+id/tv_movie_title"
-            android:layout_marginLeft="16dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginRight="16dp" />
-
-        <TextView
-            android:id="@+id/movie_available"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/available_at"
-            android:layout_below="@id/imdb_btn"
-            android:layout_marginTop="10dp"
-            android:layout_centerHorizontal="true"
-            android:textStyle="bold"
-            android:textSize="20sp" />
-
-        <ListView
-            android:id="@+id/list_view"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/movie_available"
-            android:layout_marginTop="15dp"
-            android:layout_alignParentBottom="true">
-
-        </ListView>
-
-    </RelativeLayout>
+    <Button
+        android:id="@+id/btn_paid"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        android:onClick="showIMDB"
+        android:text="@string/loading"
+        android:textColor="#ffffff"
+        android:textSize="20sp"
+        android:layout_below="@+id/btn_subscription"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_margin="16dp" />
 
 
 </RelativeLayout>

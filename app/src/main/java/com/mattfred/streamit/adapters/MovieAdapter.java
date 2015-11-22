@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.mattfred.streamit.R;
@@ -67,12 +68,17 @@ public class MovieAdapter extends ArrayAdapter<Object> {
         TextView textView = (TextView) view.findViewById(R.id.tv_movie_title);
         textView.setText(title);
 
+        ProgressBar progressBar = (ProgressBar) view.findViewById(R.id.progress_bar);
+        progressBar.setVisibility(View.VISIBLE);
+
         Bitmap bitmap = imageCache.get(id);
         if (bitmap != null) {
             ImageView imageView = (ImageView) view.findViewById(R.id.iv_movie_icon);
             imageView.setImageBitmap(bitmap);
+            progressBar.setVisibility(View.INVISIBLE);
         } else {
             container.view = view;
+            container.progressBar = progressBar;
             ImageLoader loader = new ImageLoader();
             loader.execute(container);
         }
@@ -118,6 +124,7 @@ public class MovieAdapter extends ArrayAdapter<Object> {
             } else {
                 imageCache.put(result.show.getId(), result.bitmap);
             }
+            result.progressBar.setVisibility(View.INVISIBLE);
         }
     }
 }
