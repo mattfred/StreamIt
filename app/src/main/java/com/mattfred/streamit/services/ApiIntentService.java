@@ -111,10 +111,4 @@ public class ApiIntentService extends IntentService {
         bundle.putSerializable(TASK, ApiTask.ShowTitleSearch);
         baseIntent(context, bundle);
     }
-
-    public static void getSubscriptionSources(Context context) {
-        Bundle bundle = new Bundle(1);
-        bundle.putSerializable(TASK, ApiTask.GetSources);
-        baseIntent(context, bundle);
-    }
 }

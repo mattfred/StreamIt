@@ -24,8 +24,8 @@ public interface RetrofitInterface {
     void getSubscriptionSources(@Path("region") String region, @Path("apiKey") String apiKey, Callback<SourceResult> cb);
 
     @GET("/{region}/{apiKey}/movie/{id}")
-    void getMovieDetials(@Path("region") String region, @Path("apiKey") String apiKey, @Path("id") String id, Callback<MovieInfo> cb);
+    void getMovieDetails(@Path("region") String region, @Path("apiKey") String apiKey, @Path("id") String id, Callback<MovieInfo> cb);
 
     @GET("/{region}/{apiKey}/show/{id}")
-    void getShowDetials(@Path("region") String region, @Path("apiKey") String apiKey, @Path("id") String id, Callback<MovieInfo> cb);
+    void getShowDetails(@Path("region") String region, @Path("apiKey") String apiKey, @Path("id") String id, Callback<MovieInfo> cb);
 }

@@ -18,6 +18,7 @@
         android:layout_width="20dp"
         android:layout_height="20dp"
         android:layout_marginLeft="25dp"
+        android:layout_marginStart="25dp"
         android:layout_alignParentTop="true"
         android:layout_marginTop="35dp"
         android:layout_marginBottom="10dp"/>

@@ -28,6 +28,7 @@ public class MovieListActivity extends AppCompatActivity implements AdapterView.
         setContentView(R.layout.activity_movie_list);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        //noinspection ConstantConditions
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         objects = Globals.getResults();
@@ -38,7 +39,7 @@ public class MovieListActivity extends AppCompatActivity implements AdapterView.
     }
 
     private void updateDisplay() {
-        MovieAdapter adapter = new MovieAdapter(this, R.layout.item_movie, objects);
+        MovieAdapter adapter = new MovieAdapter(this, objects);
         listView.setAdapter(adapter);
     }
 

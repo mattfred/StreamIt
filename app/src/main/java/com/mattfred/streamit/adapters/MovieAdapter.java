@@ -32,8 +32,8 @@ public class MovieAdapter extends ArrayAdapter<Object> {
 
     private final LruCache<Integer, Bitmap> imageCache;
 
-    public MovieAdapter(Context context, int resource, List<Object> objects) {
-        super(context, resource, objects);
+    public MovieAdapter(Context context, List<Object> objects) {
+        super(context, R.layout.item_movie, objects);
         this.context = context;
         this.results = objects;
 
@@ -93,7 +93,7 @@ public class MovieAdapter extends ArrayAdapter<Object> {
         @Override
         protected ResultAndView doInBackground(ResultAndView... params) {
             ResultAndView container = params[0];
-            String url = "";
+            String url;
             if (container.isMovie) {
                 Movie movie = container.movie;
                 url = movie.getPoster_120x171();

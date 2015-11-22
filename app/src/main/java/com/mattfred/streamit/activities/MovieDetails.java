@@ -49,6 +49,7 @@ public class MovieDetails extends AppCompatActivity implements View.OnClickListe
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        //noinspection ConstantConditions
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         TextView textView = (TextView) findViewById(R.id.tv_movie_title);
@@ -136,17 +137,21 @@ public class MovieDetails extends AppCompatActivity implements View.OnClickListe
 
     private void setupButtonText() {
         if (Globals.isMovie()) {
-            free.setText("Free Sources: " + info.getFree_web_sources().size());
+            String freeString = getString(R.string.free_source) + info.getFree_web_sources().size();
+            free.setText(freeString);
             free.setEnabled(true);
 
-            subscription.setText("Subscription Sources: " + info.getSubscription_web_sources().size());
+            String subscriptionString = getString(R.string.subscription_source) + info.getSubscription_web_sources().size();
+            subscription.setText(subscriptionString);
             subscription.setEnabled(true);
 
-            paid.setText("Paid Sources: " + info.getPurchase_web_sources().size());
+            String paidText = getString(R.string.paid_sources) + info.getPurchase_web_sources().size();
+            paid.setText(paidText);
             paid.setEnabled(true);
 
         } else {
-            free.setText("Channels: " + info.getChannels().size());
+            String freeChannel = getString(R.string.channels) + info.getChannels().size();
+            free.setText(freeChannel);
         }
     }
 
@@ -223,10 +228,10 @@ public class MovieDetails extends AppCompatActivity implements View.OnClickListe
     }
 
     private void getDetails() {
-        String region = StreamItPreferences.getString(MovieDetails.this, Constants.REGION, Constants.REGION_US);
+        String region = StreamItPreferences.getString(MovieDetails.this, Constants.REGION_US, Constants.REGION_US);
         String apiKey = getString(R.string.apiKey);
 
-        GuideBoxAPI.getAPIService().getMovieDetials(region, apiKey, String.valueOf(Globals.getId()), new Callback<MovieInfo>() {
+        GuideBoxAPI.getAPIService().getMovieDetails(region, apiKey, String.valueOf(Globals.getId()), new Callback<MovieInfo>() {
             @Override
             public void success(MovieInfo movieDetails, Response response) {
                 info = movieDetails;
@@ -241,10 +246,10 @@ public class MovieDetails extends AppCompatActivity implements View.OnClickListe
     }
 
     private void getShowDetails() {
-        String region = StreamItPreferences.getString(MovieDetails.this, Constants.REGION, Constants.REGION_US);
+        String region = StreamItPreferences.getString(MovieDetails.this, Constants.REGION_US, Constants.REGION_US);
         String apiKey = getString(R.string.apiKey);
 
-        GuideBoxAPI.getAPIService().getShowDetials(region, apiKey, String.valueOf(Globals.getId()), new Callback<MovieInfo>() {
+        GuideBoxAPI.getAPIService().getShowDetails(region, apiKey, String.valueOf(Globals.getId()), new Callback<MovieInfo>() {
             @Override
             public void success(MovieInfo movieDetails, Response response) {
                 info = movieDetails;

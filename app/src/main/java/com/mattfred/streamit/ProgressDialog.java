@@ -6,7 +6,7 @@ import android.widget.TextView;
 
 public class ProgressDialog extends Dialog {
 
-    private TextView textView;
+    private final TextView textView;
 
     public ProgressDialog(Context context) {
         super(context);

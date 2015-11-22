@@ -15,13 +15,13 @@
 
     <string name="banner_ad_unit_id">ca-app-pub-1401987492890753/7754128224</string>
     <string name="banner_ad_movie_details_id">ca-app-pub-1401987492890753/1567993827</string>
-    <string name="banner_ad_show_details_id">ca-app-pub-1401987492890753/9099117020</string>
     <string name="title_activity_movie_details">Details</string>
     <string name="imdb_info">IMDB Info</string>
     <string name="movie_icon">Movie Icon</string>
-    <string name="title_activity_show_detials">ShowDetials</string>
-    <string name="title_activity_show_detail">ShowDetail</string>
     <string name="results">Results</string>
-    <string name="available_at">Avaliable to watch at:</string>
     <string name="instructions">Enter a movie title to see if it can be viewed online.</string>
+    <string name="free_source">"Free Sources: "</string>
+    <string name="subscription_source">"Subscription Sources: "</string>
+    <string name="paid_sources">"Paid Sources: "</string>
+    <string name="channels">"Channels: "</string>
 </resources>
