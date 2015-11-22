@@ -24,17 +24,9 @@ public final class AnalyticsTrackers {
 
   private static AnalyticsTrackers sInstance;
 
-  public static synchronized void initialize(Context context) {
-    if (sInstance != null) {
-      throw new IllegalStateException("Extra call to initialize analytics trackers");
-    }
-
-    sInstance = new AnalyticsTrackers(context);
-  }
-
-  public static synchronized AnalyticsTrackers getInstance() {
+  public static synchronized AnalyticsTrackers getInstance(Context context) {
     if (sInstance == null) {
-      throw new IllegalStateException("Call initialize() before getInstance()");
+      sInstance = new AnalyticsTrackers(context);
     }
 
     return sInstance;
@@ -44,7 +36,7 @@ public final class AnalyticsTrackers {
   private final Context mContext;
 
   /**
-   * Don't instantiate directly - use {@link #getInstance()} instead.
+   * Don't instantiate directly - use {@link #getInstance(Context)} instead.
    */
   private AnalyticsTrackers(Context context) {
     mContext = context.getApplicationContext();

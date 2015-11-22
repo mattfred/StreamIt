@@ -268,7 +268,7 @@ public class MovieDetails extends AppCompatActivity implements View.OnClickListe
     }
 
     private void trackScreen() {
-        Tracker tracker = AnalyticsTrackers.getInstance().get(AnalyticsTrackers.Target.APP);
+        Tracker tracker = AnalyticsTrackers.getInstance(MovieDetails.this).get(AnalyticsTrackers.Target.APP);
         tracker.setScreenName("Movie Details");
         tracker.send(new HitBuilders.ScreenViewBuilder().build());
     }

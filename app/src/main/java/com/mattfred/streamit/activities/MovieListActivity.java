@@ -78,7 +78,7 @@ public class MovieListActivity extends AppCompatActivity implements AdapterView.
     }
 
     private void trackScreen() {
-        Tracker tracker = AnalyticsTrackers.getInstance().get(AnalyticsTrackers.Target.APP);
+        Tracker tracker = AnalyticsTrackers.getInstance(MovieListActivity.this).get(AnalyticsTrackers.Target.APP);
         tracker.setScreenName("Movie List");
         tracker.send(new HitBuilders.ScreenViewBuilder().build());
     }

@@ -55,11 +55,6 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
-        try {
-            AnalyticsTrackers.initialize(MainActivity.this);
-        } catch (Exception e) {
-            // swallow
-        }
 
         trackScreen();
 
@@ -187,7 +182,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void trackScreen() {
-        Tracker tracker = AnalyticsTrackers.getInstance().get(AnalyticsTrackers.Target.APP);
+        Tracker tracker = AnalyticsTrackers.getInstance(MainActivity.this).get(AnalyticsTrackers.Target.APP);
         tracker.setScreenName("Main Activity");
         tracker.send(new HitBuilders.ScreenViewBuilder().build());
     }

@@ -19,7 +19,7 @@
     <string name="imdb_info">IMDB Info</string>
     <string name="movie_icon">Movie Icon</string>
     <string name="results">Results</string>
-    <string name="instructions">Enter a movie title to see if it can be viewed online.</string>
+    <string name="instructions">Enter a title to see if it can be viewed online.</string>
     <string name="free_source">"Free Sources: "</string>
     <string name="subscription_source">"Subscription Sources: "</string>
     <string name="paid_sources">"Paid Sources: "</string>

@@ -28,6 +28,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <!--suppress AndroidDomInspection -->
         <activity
             android:name=".ProgressDialog"
             android:label="@string/title_activity_progress_dialog"
