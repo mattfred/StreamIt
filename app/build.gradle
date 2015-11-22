@@ -40,12 +40,13 @@ android {
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     testCompile 'junit:junit:4.12'
+    compile('com.crashlytics.sdk.android:crashlytics:2.5.3@aar') {
+        transitive = true;
+    }
     compile 'com.android.support:appcompat-v7:23.1.1'
     compile 'com.android.support:design:23.1.1'
     compile 'com.google.guava:guava:19.0-rc2'
     compile 'com.squareup.retrofit:retrofit:1.7.0'
     compile 'com.google.android.gms:play-services-ads:8.3.0'
-    compile('com.crashlytics.sdk.android:crashlytics:2.5.3@aar') {
-        transitive = true;
-    }
+    compile 'com.google.android.gms:play-services-analytics:8.3.0'
 }

@@ -9,6 +9,9 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
+import com.mattfred.streamit.AnalyticsTrackers;
 import com.mattfred.streamit.R;
 import com.mattfred.streamit.adapters.MovieAdapter;
 import com.mattfred.streamit.model.Movie;
@@ -30,6 +33,7 @@ public class MovieListActivity extends AppCompatActivity implements AdapterView.
         setSupportActionBar(toolbar);
         //noinspection ConstantConditions
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        trackScreen();
 
         objects = Globals.getResults();
 
@@ -71,5 +75,11 @@ public class MovieListActivity extends AppCompatActivity implements AdapterView.
             Globals.setIsMovie(false);
         }
         startActivity(new Intent(this, MovieDetails.class));
+    }
+
+    private void trackScreen() {
+        Tracker tracker = AnalyticsTrackers.getInstance().get(AnalyticsTrackers.Target.APP);
+        tracker.setScreenName("Movie List");
+        tracker.send(new HitBuilders.ScreenViewBuilder().build());
     }
 }

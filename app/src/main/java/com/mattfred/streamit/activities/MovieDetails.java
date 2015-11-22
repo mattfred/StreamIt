@@ -19,6 +19,9 @@ import android.widget.TextView;
 
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
+import com.mattfred.streamit.AnalyticsTrackers;
 import com.mattfred.streamit.R;
 import com.mattfred.streamit.model.MovieInfo;
 import com.mattfred.streamit.utils.Constants;
@@ -51,6 +54,7 @@ public class MovieDetails extends AppCompatActivity implements View.OnClickListe
 
         //noinspection ConstantConditions
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        trackScreen();
 
         TextView textView = (TextView) findViewById(R.id.tv_movie_title);
         textView.setText(Globals.getTitle());
@@ -261,5 +265,11 @@ public class MovieDetails extends AppCompatActivity implements View.OnClickListe
                 error.printStackTrace();
             }
         });
+    }
+
+    private void trackScreen() {
+        Tracker tracker = AnalyticsTrackers.getInstance().get(AnalyticsTrackers.Target.APP);
+        tracker.setScreenName("Movie Details");
+        tracker.send(new HitBuilders.ScreenViewBuilder().build());
     }
 }

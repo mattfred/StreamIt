@@ -21,12 +21,16 @@ import android.widget.Toast;
 import com.crashlytics.android.Crashlytics;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 import com.google.common.base.Strings;
+import com.mattfred.streamit.AnalyticsTrackers;
 import com.mattfred.streamit.ProgressDialog;
 import com.mattfred.streamit.R;
 import com.mattfred.streamit.broadcast.BroadcastUtil;
 import com.mattfred.streamit.services.ApiIntentService;
 import com.mattfred.streamit.services.ApiTask;
+
 import io.fabric.sdk.android.Fabric;
 
 public class MainActivity extends AppCompatActivity {
@@ -51,7 +55,13 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
-        // ApiIntentService.getSubscriptionSources(this);
+        try {
+            AnalyticsTrackers.initialize(MainActivity.this);
+        } catch (Exception e) {
+            // swallow
+        }
+
+        trackScreen();
 
         mAdView = (AdView) findViewById(R.id.ad_view);
         AdRequest adRequest = new AdRequest.Builder()
@@ -174,6 +184,12 @@ public class MainActivity extends AppCompatActivity {
         };
         broadcastManager.registerReceiver(broadcastReceiver, BroadcastUtil.stopFilter());
         broadcastManager.registerReceiver(broadcastReceiver, BroadcastUtil.errorFilter());
+    }
+
+    private void trackScreen() {
+        Tracker tracker = AnalyticsTrackers.getInstance().get(AnalyticsTrackers.Target.APP);
+        tracker.setScreenName("Main Activity");
+        tracker.send(new HitBuilders.ScreenViewBuilder().build());
     }
 
     private void removeReceiver() {

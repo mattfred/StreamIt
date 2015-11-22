@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--suppress AndroidDomInspection, AndroidDomInspection -->
+<!-- suppress AndroidDomInspection, AndroidDomInspection -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.mattfred.streamit" >
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
         android:allowBackup="true"
@@ -35,10 +36,10 @@
         <activity
             android:name=".activities.MovieListActivity"
             android:configChanges="orientation"
+            android:label="@string/results"
             android:parentActivityName=".activities.MainActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:label="@string/results">
+            android:theme="@style/AppTheme.NoActionBar" >
         </activity>
         <activity
             android:name=".activities.MovieDetails"
@@ -53,11 +54,15 @@
             android:name=".activities.SettingsActivity"
             android:label="@string/action_settings"
             android:parentActivityName=".activities.MainActivity"
-            android:theme="@style/AppTheme">
+            android:theme="@style/AppTheme" >
         </activity>
+
         <meta-data
             android:name="io.fabric.ApiKey"
             android:value="96932295f2f5f3566b8e7f579e6089d51997e06f" />
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
     </application>
 
 </manifest>
