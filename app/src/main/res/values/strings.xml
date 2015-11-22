@@ -23,4 +23,5 @@
     <string name="title_activity_show_detail">ShowDetail</string>
     <string name="results">Results</string>
     <string name="available_at">Avaliable to watch at:</string>
+    <string name="instructions">Enter a movie title to see if it can be viewed online.</string>
 </resources>
