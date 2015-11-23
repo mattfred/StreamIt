@@ -23,7 +23,7 @@ import java.net.URL;
 import java.util.List;
 
 /**
- * Created by Matthew on 11/5/2015.
+ * List Adapter for show search results
  */
 public class MovieAdapter extends ArrayAdapter<Object> {
 
