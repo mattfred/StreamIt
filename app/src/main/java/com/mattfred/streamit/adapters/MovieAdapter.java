@@ -44,12 +44,25 @@ public class MovieAdapter extends ArrayAdapter<Object> {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View view = inflater.inflate(R.layout.item_movie, parent, false);
 
-        ResultAndView container = new ResultAndView();
+        ResultAndView container;
+
+        if (convertView == null) {
+
+            LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            convertView = inflater.inflate(R.layout.item_movie, parent, false);
+            container = new ResultAndView();
+            container.textView = (TextView) convertView.findViewById(R.id.tv_movie_title);
+            container.progressBar = (ProgressBar) convertView.findViewById(R.id.progress_bar);
+            container.imageView = (ImageView) convertView.findViewById(R.id.iv_movie_icon);
+            convertView.setTag(container);
+        } else {
+            container = (ResultAndView) convertView.getTag();
+        }
+
         String title = "";
         int id = 0;
+        container.imageView.setImageBitmap(null);
 
         if (results.get(position) instanceof Movie) {
             Movie movie = (Movie) results.get(position);
@@ -65,28 +78,21 @@ public class MovieAdapter extends ArrayAdapter<Object> {
             container.isMovie = false;
         }
 
-        TextView textView = (TextView) view.findViewById(R.id.tv_movie_title);
-        textView.setText(title);
+        container.textView.setText(title);
 
-        ProgressBar progressBar = (ProgressBar) view.findViewById(R.id.progress_bar);
-        progressBar.setVisibility(View.VISIBLE);
+        container.progressBar.setVisibility(View.VISIBLE);
 
         Bitmap bitmap = imageCache.get(id);
         if (bitmap != null) {
-            ImageView imageView = (ImageView) view.findViewById(R.id.iv_movie_icon);
-            imageView.setImageBitmap(bitmap);
-            progressBar.setVisibility(View.INVISIBLE);
+            container.imageView.setImageBitmap(bitmap);
+            container.progressBar.setVisibility(View.INVISIBLE);
         } else {
-            container.view = view;
-            container.progressBar = progressBar;
             ImageLoader loader = new ImageLoader();
             loader.execute(container);
         }
 
-        return view;
+        return convertView;
     }
-
-
 
     private class ImageLoader extends AsyncTask<ResultAndView, Void, ResultAndView> {
 
@@ -116,15 +122,14 @@ public class MovieAdapter extends ArrayAdapter<Object> {
         }
 
         @Override
-        protected void onPostExecute(ResultAndView result) {
-            ImageView imageView = (ImageView) result.view.findViewById(R.id.iv_movie_icon);
-            imageView.setImageBitmap(result.bitmap);
-            if (result.isMovie) {
-                imageCache.put(result.movie.getId(), result.bitmap);
+        protected void onPostExecute(ResultAndView container) {
+            container.imageView.setImageBitmap(container.bitmap);
+            if (container.isMovie) {
+                imageCache.put(container.movie.getId(), container.bitmap);
             } else {
-                imageCache.put(result.show.getId(), result.bitmap);
+                imageCache.put(container.show.getId(), container.bitmap);
             }
-            result.progressBar.setVisibility(View.INVISIBLE);
+            container.progressBar.setVisibility(View.INVISIBLE);
         }
     }
 }
