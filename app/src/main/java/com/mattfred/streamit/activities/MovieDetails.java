@@ -54,7 +54,6 @@ public class MovieDetails extends AppCompatActivity implements View.OnClickListe
 
         //noinspection ConstantConditions
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        trackScreen();
 
         TextView textView = (TextView) findViewById(R.id.tv_movie_title);
         textView.setText(Globals.getTitle());
@@ -117,6 +116,7 @@ public class MovieDetails extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onResume() {
         super.onResume();
+        trackScreen();
         if (mAdView != null) {
             mAdView.resume();
         }

@@ -33,13 +33,18 @@ public class MovieListActivity extends AppCompatActivity implements AdapterView.
         setSupportActionBar(toolbar);
         //noinspection ConstantConditions
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        trackScreen();
 
         objects = Globals.getResults();
 
         listView = (ListView) findViewById(R.id.list_view);
         listView.setOnItemClickListener(this);
         updateDisplay();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        trackScreen();
     }
 
     private void updateDisplay() {
