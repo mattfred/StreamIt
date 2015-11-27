@@ -37,6 +37,28 @@ public class ApiIntentService extends IntentService {
         super("ApiIntentService");
     }
 
+    private static void baseIntent(Context context, @Nullable Bundle bundle) {
+        Intent intent = new Intent(context, ApiIntentService.class);
+        if (bundle != null) {
+            intent.putExtras(bundle);
+        }
+        context.startService(intent);
+    }
+
+    public static void movieTitleSearch(Context context, String title) {
+        Bundle bundle = new Bundle(2);
+        bundle.putString(TITLE, title);
+        bundle.putSerializable(TASK, ApiTask.MovieTitleSearch);
+        baseIntent(context, bundle);
+    }
+
+    public static void showTitleSearch(Context context, String title) {
+        Bundle bundle = new Bundle(2);
+        bundle.putString(TITLE, title);
+        bundle.putSerializable(TASK, ApiTask.ShowTitleSearch);
+        baseIntent(context, bundle);
+    }
+
     @Override
     protected void onHandleIntent(Intent intent) {
         String region = StreamItPreferences.getString(ApiIntentService.this, Constants.REGION, Constants.REGION_US);
@@ -98,27 +120,5 @@ public class ApiIntentService extends IntentService {
                 }
             });
         }
-    }
-
-    private static void baseIntent(Context context, @Nullable Bundle bundle) {
-        Intent intent = new Intent(context, ApiIntentService.class);
-        if (bundle != null) {
-            intent.putExtras(bundle);
-        }
-        context.startService(intent);
-    }
-
-    public static void movieTitleSearch(Context context, String title) {
-        Bundle bundle = new Bundle(2);
-        bundle.putString(TITLE, title);
-        bundle.putSerializable(TASK, ApiTask.MovieTitleSearch);
-        baseIntent(context, bundle);
-    }
-
-    public static void showTitleSearch(Context context, String title) {
-        Bundle bundle = new Bundle(2);
-        bundle.putString(TITLE, title);
-        bundle.putSerializable(TASK, ApiTask.ShowTitleSearch);
-        baseIntent(context, bundle);
     }
 }

@@ -8,7 +8,7 @@ import java.util.List;
  */
 public class Caster {
 
-    public static <T>List<T> castCollection(List srcList, Class<T> clazz) {
+    public static <T> List<T> castCollection(List srcList, Class<T> clazz) {
         List<T> list = new ArrayList<>();
         for (Object object : srcList) {
             if (object != null && clazz.isAssignableFrom(object.getClass()))

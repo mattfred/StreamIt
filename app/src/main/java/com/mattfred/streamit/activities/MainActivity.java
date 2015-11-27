@@ -167,7 +167,7 @@ public class MainActivity extends AppCompatActivity {
                     if (ApiTask.MovieTitleSearch == task || ApiTask.ShowTitleSearch == task) {
                         Toast.makeText(MainActivity.this, R.string.search_error, Toast.LENGTH_LONG).show();
                     }
-                } else if (BroadcastUtil.NO_RESULTS.equals(intent.getAction())){
+                } else if (BroadcastUtil.NO_RESULTS.equals(intent.getAction())) {
                     AlertDialog dialog = new AlertDialog.Builder(MainActivity.this)
                             .setTitle(R.string.no_results_title)
                             .setMessage(R.string.no_results_message)

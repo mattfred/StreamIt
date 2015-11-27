@@ -18,42 +18,42 @@ import java.util.Map;
  */
 public final class AnalyticsTrackers {
 
-  private static AnalyticsTrackers sInstance;
-  private final Map<Target, Tracker> mTrackers = new HashMap<>();
-  private final Context mContext;
+    private static AnalyticsTrackers sInstance;
+    private final Map<Target, Tracker> mTrackers = new HashMap<>();
+    private final Context mContext;
 
-  /**
-   * Don't instantiate directly - use {@link #getInstance(Context)} instead.
-   */
-  private AnalyticsTrackers(Context context) {
-    mContext = context.getApplicationContext();
-  }
-
-  public static synchronized AnalyticsTrackers getInstance(Context context) {
-    if (sInstance == null) {
-      sInstance = new AnalyticsTrackers(context);
+    /**
+     * Don't instantiate directly - use {@link #getInstance(Context)} instead.
+     */
+    private AnalyticsTrackers(Context context) {
+        mContext = context.getApplicationContext();
     }
 
-    return sInstance;
-  }
+    public static synchronized AnalyticsTrackers getInstance(Context context) {
+        if (sInstance == null) {
+            sInstance = new AnalyticsTrackers(context);
+        }
 
-  public synchronized Tracker get(Target target) {
-    if (!mTrackers.containsKey(target)) {
-      Tracker tracker;
-      switch (target) {
-        case APP:
-          tracker = GoogleAnalytics.getInstance(mContext).newTracker(R.xml.app_tracker);
-          break;
-        default:
-          throw new IllegalArgumentException("Unhandled analytics target " + target);
-      }
-      mTrackers.put(target, tracker);
+        return sInstance;
     }
 
-    return mTrackers.get(target);
-  }
+    public synchronized Tracker get(Target target) {
+        if (!mTrackers.containsKey(target)) {
+            Tracker tracker;
+            switch (target) {
+                case APP:
+                    tracker = GoogleAnalytics.getInstance(mContext).newTracker(R.xml.app_tracker);
+                    break;
+                default:
+                    throw new IllegalArgumentException("Unhandled analytics target " + target);
+            }
+            mTrackers.put(target, tracker);
+        }
 
-  public enum Target {
-    APP
-  }
+        return mTrackers.get(target);
+    }
+
+    public enum Target {
+        APP
+    }
 }
