@@ -24,4 +24,5 @@
     <string name="subscription_source">"Subscription Sources: "</string>
     <string name="paid_sources">"Paid Sources: "</string>
     <string name="channels">"Channels: "</string>
+    <string name="select_season">Select a season:</string>
 </resources>
