@@ -48,9 +48,14 @@ public class ApiIntentService extends IntentService {
             GuideBoxAPI.getAPIService().performMovieTitleSearch(region, apiKey, title, new Callback<MovieResult>() {
                 @Override
                 public void success(MovieResult movieResult, Response response) {
-                    Globals.setResults(Caster.castCollection(movieResult.getResults(), Object.class));
-                    LocalBroadcastManager.getInstance(ApiIntentService.this)
-                            .sendBroadcast(BroadcastUtil.stop(ApiTask.MovieTitleSearch));
+                    if (movieResult.getResults().size() == 0) {
+                        LocalBroadcastManager.getInstance(ApiIntentService.this)
+                                .sendBroadcast(BroadcastUtil.noResults(ApiTask.MovieTitleSearch));
+                    } else {
+                        Globals.setResults(Caster.castCollection(movieResult.getResults(), Object.class));
+                        LocalBroadcastManager.getInstance(ApiIntentService.this)
+                                .sendBroadcast(BroadcastUtil.stop(ApiTask.MovieTitleSearch));
+                    }
                 }
 
                 @Override
@@ -64,9 +69,14 @@ public class ApiIntentService extends IntentService {
             GuideBoxAPI.getAPIService().performShowTitleSearch(region, apiKey, title, new Callback<ShowResult>() {
                 @Override
                 public void success(ShowResult showResult, Response response) {
-                    Globals.setResults(Caster.castCollection(showResult.getResults(), Object.class));
-                    LocalBroadcastManager.getInstance(ApiIntentService.this)
-                            .sendBroadcast(BroadcastUtil.stop(ApiTask.ShowTitleSearch));
+                    if (showResult.getResults().size() == 0) {
+                        LocalBroadcastManager.getInstance(ApiIntentService.this)
+                                .sendBroadcast(BroadcastUtil.noResults(ApiTask.ShowTitleSearch));
+                    } else {
+                        Globals.setResults(Caster.castCollection(showResult.getResults(), Object.class));
+                        LocalBroadcastManager.getInstance(ApiIntentService.this)
+                                .sendBroadcast(BroadcastUtil.stop(ApiTask.ShowTitleSearch));
+                    }
                 }
 
                 @Override

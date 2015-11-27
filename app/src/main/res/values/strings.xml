@@ -25,4 +25,7 @@
     <string name="paid_sources">"Paid Sources: "</string>
     <string name="channels">"Channels: "</string>
     <string name="select_season">Select a season:</string>
+    <string name="no_results_title">No Results</string>
+    <string name="no_results_message">No results for search title found.</string>
+    <string name="ok">OK</string>
 </resources>

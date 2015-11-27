@@ -1,7 +1,9 @@
 package com.mattfred.streamit.activities;
 
+import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -173,11 +175,24 @@ public class MainActivity extends AppCompatActivity {
                     if (ApiTask.MovieTitleSearch == task || ApiTask.ShowTitleSearch == task) {
                         Toast.makeText(MainActivity.this, R.string.search_error, Toast.LENGTH_LONG).show();
                     }
+                } else if (BroadcastUtil.NO_RESULTS.equals(intent.getAction())){
+                    AlertDialog dialog = new AlertDialog.Builder(MainActivity.this)
+                            .setTitle(R.string.no_results_title)
+                            .setMessage(R.string.no_results_message)
+                            .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                }
+                            })
+                            .create();
+                    dialog.show();
                 }
             }
         };
         broadcastManager.registerReceiver(broadcastReceiver, BroadcastUtil.stopFilter());
         broadcastManager.registerReceiver(broadcastReceiver, BroadcastUtil.errorFilter());
+        broadcastManager.registerReceiver(broadcastReceiver, BroadcastUtil.noResultsFilter());
     }
 
     private void trackScreen() {
