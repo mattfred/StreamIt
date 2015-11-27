@@ -10,11 +10,14 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.google.android.gms.ads.AdRequest;
@@ -24,6 +27,8 @@ import com.google.android.gms.analytics.Tracker;
 import com.mattfred.streamit.AnalyticsTrackers;
 import com.mattfred.streamit.R;
 import com.mattfred.streamit.model.MovieInfo;
+import com.mattfred.streamit.model.Season;
+import com.mattfred.streamit.model.SeasonResults;
 import com.mattfred.streamit.utils.Constants;
 import com.mattfred.streamit.utils.Globals;
 import com.mattfred.streamit.utils.GuideBoxAPI;
@@ -39,11 +44,15 @@ import retrofit.client.Response;
 
 public class MovieDetails extends AppCompatActivity implements View.OnClickListener {
 
+    private static final String TAG = "MovieDetials";
+
     private AdView mAdView;
     private ImageView imageView;
     private Button free, subscription, paid;
     private MovieInfo info;
     private ProgressBar progressBar;
+    private Spinner spinner;
+    private TextView spinnerText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,14 +82,23 @@ public class MovieDetails extends AppCompatActivity implements View.OnClickListe
         progressBar = (ProgressBar) findViewById(R.id.progress_bar);
         progressBar.setVisibility(View.VISIBLE);
 
+        spinnerText = (TextView) findViewById(R.id.tv_season);
+
+        spinner = (Spinner) findViewById(R.id.season_spinner);
+
         if (Globals.isMovie()) {
             getDetails();
             subscription.setVisibility(View.VISIBLE);
             paid.setVisibility(View.VISIBLE);
+            spinner.setVisibility(View.GONE);
+            spinnerText.setVisibility(View.GONE);
         } else {
             getShowDetails();
             subscription.setVisibility(View.INVISIBLE);
             paid.setVisibility(View.INVISIBLE);
+            free.setVisibility(View.INVISIBLE);
+            spinner.setVisibility(View.VISIBLE);
+            spinnerText.setVisibility(View.VISIBLE);
         }
 
         imageView = (ImageView) findViewById(R.id.iv_movie_icon);
@@ -252,12 +270,25 @@ public class MovieDetails extends AppCompatActivity implements View.OnClickListe
     private void getShowDetails() {
         String region = StreamItPreferences.getString(MovieDetails.this, Constants.REGION_US, Constants.REGION_US);
         String apiKey = getString(R.string.apiKey);
+        String id = String.valueOf(Globals.getId());
 
-        GuideBoxAPI.getAPIService().getShowDetails(region, apiKey, String.valueOf(Globals.getId()), new Callback<MovieInfo>() {
+//        GuideBoxAPI.getAPIService().getShowDetails(region, apiKey, id, new Callback<MovieInfo>() {
+//            @Override
+//            public void success(MovieInfo movieDetails, Response response) {
+//                info = movieDetails;
+//                setupButtonText();
+//            }
+//
+//            @Override
+//            public void failure(RetrofitError error) {
+//                error.printStackTrace();
+//            }
+//        });
+
+        GuideBoxAPI.getAPIService().getShowSeasons(region, apiKey, id, new Callback<SeasonResults>() {
             @Override
-            public void success(MovieInfo movieDetails, Response response) {
-                info = movieDetails;
-                setupButtonText();
+            public void success(SeasonResults seasonResults, Response response) {
+                setupSpinner(seasonResults.getResults());
             }
 
             @Override
@@ -265,6 +296,14 @@ public class MovieDetails extends AppCompatActivity implements View.OnClickListe
                 error.printStackTrace();
             }
         });
+    }
+
+    private void setupSpinner(List<Season> results) {
+        Log.d(TAG, "Seasons: " + results.size());
+        ArrayAdapter<Season> arrayAdapter = new ArrayAdapter<>(this,
+                android.R.layout.simple_spinner_item, results);
+        arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(arrayAdapter);
     }
 
     private void trackScreen() {
