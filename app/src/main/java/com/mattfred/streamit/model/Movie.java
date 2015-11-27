@@ -3,7 +3,7 @@ package com.mattfred.streamit.model;
 import java.io.Serializable;
 
 /**
- * Created by Matthew on 11/5/2015.
+ * Movie Object
  */
 public class Movie implements Serializable {
 

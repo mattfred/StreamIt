@@ -3,7 +3,7 @@ package com.mattfred.streamit.model;
 import java.util.List;
 
 /**
- * Created by Matthew on 11/11/2015.
+ * Show Result object
  */
 public class ShowResult {
 

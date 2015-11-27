@@ -5,7 +5,7 @@ import com.mattfred.streamit.interfaces.RetrofitInterface;
 import retrofit.RestAdapter;
 
 /**
- * Created by Matthew on 11/5/2015.
+ * Guide Box API builder
  */
 public class GuideBoxAPI {
 

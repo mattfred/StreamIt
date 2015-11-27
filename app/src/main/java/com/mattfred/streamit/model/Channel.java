@@ -1,7 +1,7 @@
 package com.mattfred.streamit.model;
 
 /**
- * Created by matthewfrederick on 11/21/15.
+ * Channel Object
  */
 public class Channel {
 

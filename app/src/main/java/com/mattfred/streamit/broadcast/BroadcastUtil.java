@@ -6,7 +6,7 @@ import android.content.IntentFilter;
 import com.mattfred.streamit.services.ApiTask;
 
 /**
- * Created by Matthew on 11/5/2015.
+ * Utility for handling broadcast intents.
  */
 public class BroadcastUtil {
 

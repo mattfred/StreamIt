@@ -1,7 +1,7 @@
 package com.mattfred.streamit.model;
 
 /**
- * Created by matthewfrederick on 11/12/15.
+ * Subscription Source object
  */
 public class SubscriptionSource {
 

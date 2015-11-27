@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by Matthew on 11/11/2015.
+ * Helper class for casting objects
  */
 public class Caster {
 

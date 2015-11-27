@@ -5,7 +5,7 @@ import com.mattfred.streamit.model.SubscriptionSource;
 import java.util.List;
 
 /**
- * Created by Matthew on 11/5/2015.
+ * Globals static object class
  */
 public class Globals {
 

@@ -18,21 +18,8 @@ import java.util.Map;
  */
 public final class AnalyticsTrackers {
 
-  public enum Target {
-    APP
-  }
-
   private static AnalyticsTrackers sInstance;
-
-  public static synchronized AnalyticsTrackers getInstance(Context context) {
-    if (sInstance == null) {
-      sInstance = new AnalyticsTrackers(context);
-    }
-
-    return sInstance;
-  }
-
-  private final Map<Target, Tracker> mTrackers = new HashMap<Target, Tracker>();
+  private final Map<Target, Tracker> mTrackers = new HashMap<>();
   private final Context mContext;
 
   /**
@@ -40,6 +27,14 @@ public final class AnalyticsTrackers {
    */
   private AnalyticsTrackers(Context context) {
     mContext = context.getApplicationContext();
+  }
+
+  public static synchronized AnalyticsTrackers getInstance(Context context) {
+    if (sInstance == null) {
+      sInstance = new AnalyticsTrackers(context);
+    }
+
+    return sInstance;
   }
 
   public synchronized Tracker get(Target target) {
@@ -56,5 +51,9 @@ public final class AnalyticsTrackers {
     }
 
     return mTrackers.get(target);
+  }
+
+  public enum Target {
+    APP
   }
 }

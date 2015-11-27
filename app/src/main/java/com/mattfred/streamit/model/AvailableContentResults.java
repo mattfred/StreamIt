@@ -1,7 +1,7 @@
 package com.mattfred.streamit.model;
 
 /**
- * Created by matthewfrederick on 11/26/15.
+ * Tv Show Available Content Results Object
  */
 public class AvailableContentResults {
 

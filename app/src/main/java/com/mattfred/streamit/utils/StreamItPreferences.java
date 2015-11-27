@@ -4,7 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 /**
- * Created by Matthew on 11/5/2015.
+ * Preference helper class
  */
 public class StreamItPreferences {
 

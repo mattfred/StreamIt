@@ -1,7 +1,7 @@
 package com.mattfred.streamit.model;
 
 /**
- * Created by Matthew on 11/21/2015.
+ * Source object
  */
 public class Source {
 

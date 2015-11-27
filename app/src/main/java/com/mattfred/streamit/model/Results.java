@@ -1,7 +1,7 @@
 package com.mattfred.streamit.model;
 
 /**
- * Created by matthewfrederick on 11/26/15.
+ * Results object
  */
 public class Results {
 

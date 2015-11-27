@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- suppress AndroidDomInspection, AndroidDomInspection -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.mattfred.streamit" >
 
@@ -31,8 +30,8 @@
 
         <receiver
             android:name="com.google.android.gms.analytics.CampaignTrackingReceiver"
-            android:exported="true"
-            android:enabled="true">
+            android:enabled="true"
+            android:exported="true">
             <intent-filter>
                 <action android:name="com.android.vending.INSTALL_REFERRER"/>
             </intent-filter>
@@ -53,12 +52,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <!-- suppress AndroidDomInspection -->
-        <activity
-            android:name=".ProgressDialog"
-            android:label="@string/title_activity_progress_dialog"
-            android:theme="@style/AppTheme.NoActionBar" >
-        </activity>
         <activity
             android:name=".activities.MovieListActivity"
             android:configChanges="orientation"
@@ -75,12 +68,6 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.mattfred.streamit.activities.MovieListActivity" />
-        </activity>
-        <activity
-            android:name=".activities.SettingsActivity"
-            android:label="@string/action_settings"
-            android:parentActivityName=".activities.MainActivity"
-            android:theme="@style/AppTheme" >
         </activity>
 
         <meta-data
