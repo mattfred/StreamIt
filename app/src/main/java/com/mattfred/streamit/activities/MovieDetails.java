@@ -33,6 +33,7 @@ import com.mattfred.streamit.utils.StreamItPreferences;
 
 import java.io.InputStream;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 
 import retrofit.Callback;
@@ -45,7 +46,7 @@ public class MovieDetails extends AppCompatActivity implements View.OnClickListe
     private ImageView imageView;
     private Button free, subscription, paid;
     private MovieInfo info;
-    private List<Source> sources;
+    private List<Source> tvPaid, tvSubscription, tvFree;
     private ProgressBar progressBar;
 
     @Override
@@ -153,28 +154,13 @@ public class MovieDetails extends AppCompatActivity implements View.OnClickListe
             paid.setEnabled(true);
 
         } else {
-            int freeInt, subscriptionInt, paidInt;
-            freeInt = subscriptionInt = paidInt = 0;
-            for (Source source : sources) {
-                switch (source.getType()) {
-                    case "free":
-                        freeInt++;
-                        break;
-                    case "subscription":
-                        subscriptionInt++;
-                        break;
-                    case "paid":
-                        paidInt++;
-                        break;
-                }
-            }
-            String freeString = getString(R.string.free_source) + freeInt;
+            String freeString = getString(R.string.free_source) + tvFree.size();
             free.setText(freeString);
 
-            String subscriptionString = getString(R.string.subscription_source) + subscriptionInt;
+            String subscriptionString = getString(R.string.subscription_source) + tvSubscription.size();
             subscription.setText(subscriptionString);
 
-            String paidString = getString(R.string.paid_sources) + paidInt;
+            String paidString = getString(R.string.paid_sources) + tvPaid.size();
             paid.setText(paidString);
         }
     }
@@ -185,12 +171,20 @@ public class MovieDetails extends AppCompatActivity implements View.OnClickListe
             if (Globals.isMovie()) {
                 showDialog(toStringArray(info.getFree_web_sources()));
             } else {
-                showDialog(toStringArray(info.getChannels()));
+                showDialog(toStringArray(tvFree));
             }
         } else if (v.getId() == subscription.getId()) {
-            showDialog(toStringArray(info.getSubscription_web_sources()));
+            if (Globals.isMovie()) {
+                showDialog(toStringArray(info.getSubscription_web_sources()));
+            } else {
+                showDialog(toStringArray(tvSubscription));
+            }
         } else if (v.getId() == paid.getId()) {
-            showDialog(toStringArray(info.getPurchase_web_sources()));
+            if (Globals.isMovie()) {
+                showDialog(toStringArray(info.getPurchase_web_sources()));
+            } else {
+                showDialog(toStringArray(tvPaid));
+            }
         }
     }
 
@@ -226,31 +220,6 @@ public class MovieDetails extends AppCompatActivity implements View.OnClickListe
         dialog.show();
     }
 
-    private class ImageLoader extends AsyncTask<String, Void, Bitmap> {
-
-        @Override
-        protected Bitmap doInBackground(String... params) {
-            String url = params[0];
-
-            try {
-                InputStream in = (InputStream) new URL(url).getContent();
-                Bitmap bitmap = BitmapFactory.decodeStream(in);
-                in.close();
-                return bitmap;
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Bitmap bitmap) {
-            imageView.setImageBitmap(bitmap);
-            progressBar.setVisibility(View.INVISIBLE);
-        }
-    }
-
     private void getDetails() {
         String region = StreamItPreferences.getString(MovieDetails.this, Constants.REGION_US, Constants.REGION_US);
         String apiKey = getString(R.string.apiKey);
@@ -276,7 +245,7 @@ public class MovieDetails extends AppCompatActivity implements View.OnClickListe
         GuideBoxAPI.getAPIService().getAvailableContent(region, apiKey, String.valueOf(Globals.getId()), new Callback<AvailableContentResults>() {
             @Override
             public void success(AvailableContentResults availableContentResults, Response response) {
-                sources = availableContentResults.getResults().getWeb().getEpisodes().getAll_sources();
+                setupSources(availableContentResults.getResults().getWeb().getEpisodes().getAll_sources());
                 setupButtonText();
             }
 
@@ -287,9 +256,46 @@ public class MovieDetails extends AppCompatActivity implements View.OnClickListe
         });
     }
 
+    private void setupSources(List<Source> sources) {
+        tvFree = new ArrayList<>();
+        tvSubscription = new ArrayList<>();
+        tvPaid = new ArrayList<>();
+
+        for (Source source : sources) {
+            if (source.getType().equalsIgnoreCase("free")) tvFree.add(source);
+            if (source.getType().equalsIgnoreCase("subscription")) tvSubscription.add(source);
+            if (source.getType().equalsIgnoreCase("paid")) tvPaid.add(source);
+        }
+    }
+
     private void trackScreen() {
         Tracker tracker = AnalyticsTrackers.getInstance(MovieDetails.this).get(AnalyticsTrackers.Target.APP);
         tracker.setScreenName("Movie Details");
         tracker.send(new HitBuilders.ScreenViewBuilder().build());
+    }
+
+    private class ImageLoader extends AsyncTask<String, Void, Bitmap> {
+
+        @Override
+        protected Bitmap doInBackground(String... params) {
+            String url = params[0];
+
+            try {
+                InputStream in = (InputStream) new URL(url).getContent();
+                Bitmap bitmap = BitmapFactory.decodeStream(in);
+                in.close();
+                return bitmap;
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Bitmap bitmap) {
+            imageView.setImageBitmap(bitmap);
+            progressBar.setVisibility(View.INVISIBLE);
+        }
     }
 }
