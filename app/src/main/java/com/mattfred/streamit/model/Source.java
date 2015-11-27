@@ -8,6 +8,7 @@ public class Source {
     private String source;
     private String display_name;
     private String link;
+    private String type;
 
     public String getSource() {
         return source;
@@ -31,6 +32,14 @@ public class Source {
 
     public void setLink(String link) {
         this.link = link;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 
     @Override

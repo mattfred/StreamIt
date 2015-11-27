@@ -23,7 +23,9 @@ import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
 import com.mattfred.streamit.AnalyticsTrackers;
 import com.mattfred.streamit.R;
+import com.mattfred.streamit.model.AvailableContentResults;
 import com.mattfred.streamit.model.MovieInfo;
+import com.mattfred.streamit.model.Source;
 import com.mattfred.streamit.utils.Constants;
 import com.mattfred.streamit.utils.Globals;
 import com.mattfred.streamit.utils.GuideBoxAPI;
@@ -43,6 +45,7 @@ public class MovieDetails extends AppCompatActivity implements View.OnClickListe
     private ImageView imageView;
     private Button free, subscription, paid;
     private MovieInfo info;
+    private List<Source> sources;
     private ProgressBar progressBar;
 
     @Override
@@ -75,12 +78,8 @@ public class MovieDetails extends AppCompatActivity implements View.OnClickListe
 
         if (Globals.isMovie()) {
             getDetails();
-            subscription.setVisibility(View.VISIBLE);
-            paid.setVisibility(View.VISIBLE);
         } else {
             getShowDetails();
-            subscription.setVisibility(View.INVISIBLE);
-            paid.setVisibility(View.INVISIBLE);
         }
 
         imageView = (ImageView) findViewById(R.id.iv_movie_icon);
@@ -154,8 +153,29 @@ public class MovieDetails extends AppCompatActivity implements View.OnClickListe
             paid.setEnabled(true);
 
         } else {
-            String freeChannel = getString(R.string.channels) + info.getChannels().size();
-            free.setText(freeChannel);
+            int freeInt, subscriptionInt, paidInt;
+            freeInt = subscriptionInt = paidInt = 0;
+            for (Source source : sources) {
+                switch (source.getType()) {
+                    case "free":
+                        freeInt++;
+                        break;
+                    case "subscription":
+                        subscriptionInt++;
+                        break;
+                    case "paid":
+                        paidInt++;
+                        break;
+                }
+            }
+            String freeString = getString(R.string.free_source) + freeInt;
+            free.setText(freeString);
+
+            String subscriptionString = getString(R.string.subscription_source) + subscriptionInt;
+            subscription.setText(subscriptionString);
+
+            String paidString = getString(R.string.paid_sources) + paidInt;
+            paid.setText(paidString);
         }
     }
 
@@ -253,10 +273,10 @@ public class MovieDetails extends AppCompatActivity implements View.OnClickListe
         String region = StreamItPreferences.getString(MovieDetails.this, Constants.REGION_US, Constants.REGION_US);
         String apiKey = getString(R.string.apiKey);
 
-        GuideBoxAPI.getAPIService().getShowDetails(region, apiKey, String.valueOf(Globals.getId()), new Callback<MovieInfo>() {
+        GuideBoxAPI.getAPIService().getAvailableContent(region, apiKey, String.valueOf(Globals.getId()), new Callback<AvailableContentResults>() {
             @Override
-            public void success(MovieInfo movieDetails, Response response) {
-                info = movieDetails;
+            public void success(AvailableContentResults availableContentResults, Response response) {
+                sources = availableContentResults.getResults().getWeb().getEpisodes().getAll_sources();
                 setupButtonText();
             }
 
