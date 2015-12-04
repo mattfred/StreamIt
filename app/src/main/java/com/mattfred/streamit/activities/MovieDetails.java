@@ -8,6 +8,7 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
@@ -26,6 +27,8 @@ import com.mattfred.streamit.AnalyticsTrackers;
 import com.mattfred.streamit.R;
 import com.mattfred.streamit.model.AvailableContentResults;
 import com.mattfred.streamit.model.MovieInfo;
+import com.mattfred.streamit.model.Season;
+import com.mattfred.streamit.model.SeasonResults;
 import com.mattfred.streamit.model.Source;
 import com.mattfred.streamit.utils.Constants;
 import com.mattfred.streamit.utils.Globals;
@@ -50,6 +53,7 @@ public class MovieDetails extends AppCompatActivity implements View.OnClickListe
     private MovieInfo info;
     private List<Source> tvPaid, tvSubscription, tvFree;
     private ProgressBar progressBar;
+    private List<Season> seasons;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -263,6 +267,30 @@ public class MovieDetails extends AppCompatActivity implements View.OnClickListe
             public void success(AvailableContentResults availableContentResults, Response response) {
                 setupSources(availableContentResults.getResults().getWeb().getEpisodes().getAll_sources());
                 setupButtonText();
+                Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        getShowSeasons();
+                    }
+                }, 1000);
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                error.printStackTrace();
+            }
+        });
+    }
+
+    private void getShowSeasons() {
+        String region = StreamItPreferences.getString(MovieDetails.this, Constants.REGION_US, Constants.REGION_US);
+        String apiKey = getString(R.string.apiKey);
+
+        GuideBoxAPI.getAPIService().getShowSeasons(region, apiKey, String.valueOf(Globals.getId()), new Callback<SeasonResults>() {
+            @Override
+            public void success(SeasonResults seasonResults, Response response) {
+                seasons = seasonResults.getResults();
             }
 
             @Override
