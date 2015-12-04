@@ -227,8 +227,15 @@ public class MovieDetails extends AppCompatActivity implements View.OnClickListe
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         Source source = sources.get(which);
-                        if (!Strings.isNullOrEmpty(source.getLink())) {
-                            navigateToWebsite(source.getLink());
+                        if (Globals.isMovie()) {
+                            if (!Strings.isNullOrEmpty(source.getLink())) {
+                                navigateToWebsite(source.getLink());
+                            }
+                        } else {
+                            Intent intent = new Intent(MovieDetails.this, ShowSelectionActivity.class);
+                            intent.putExtra(Constants.SEASONS, seasons.size());
+                            intent.putExtra(Constants.SOURCE, source.getSource());
+                            startActivity(intent);
                         }
                     }
                 }).setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {

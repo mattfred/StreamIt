@@ -13,4 +13,8 @@ public class Constants {
 
     // available regions
     public static final String REGION_US = "us";
+
+    // intent constants
+    public static final String SEASONS = "seasons";
+    public static final String SOURCE = "source";
 }
