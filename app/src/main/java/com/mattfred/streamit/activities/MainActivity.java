@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -18,6 +19,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.RadioButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.crashlytics.android.Crashlytics;
@@ -43,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
     private ProgressDialog progressDialog;
     private LocalBroadcastManager broadcastManager;
     private BroadcastReceiver broadcastReceiver;
+    private TextView netflixInfo;
 
     private RadioButton movieRB;
 
@@ -67,7 +70,30 @@ public class MainActivity extends AppCompatActivity {
         searchBox = (EditText) findViewById(R.id.et_search_box);
         movieRB = (RadioButton) findViewById(R.id.rd_movie);
 
+        netflixInfo = (TextView) findViewById(R.id.netflix_info_tv);
+        netflixInfo.setPaintFlags(netflixInfo.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+        netflixInfo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showNetflixDialog();
+            }
+        });
+
         registerReceiver();
+    }
+
+    private void showNetflixDialog() {
+        AlertDialog dialog = new AlertDialog.Builder(MainActivity.this)
+                .setTitle(R.string.netflix_title)
+                .setMessage(R.string.nexflix_full_text)
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                })
+                .create();
+        dialog.show();
     }
 
     @Override

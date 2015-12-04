@@ -6,9 +6,11 @@
     android:layout_height="match_parent" android:fitsSystemWindows="true"
     tools:context=".MainActivity">
 
-    <android.support.design.widget.AppBarLayout android:layout_height="wrap_content"
-        android:layout_width="match_parent" android:theme="@style/AppTheme.AppBarOverlay"
-        android:id="@+id/view">
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay">
 
         <android.support.v7.widget.Toolbar android:id="@+id/toolbar"
             android:layout_width="match_parent" android:layout_height="?attr/actionBarSize"
@@ -17,44 +19,44 @@
     </android.support.design.widget.AppBarLayout>
 
     <TextView
+        android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/instructions"
-        android:id="@+id/textView"
         android:layout_below="@+id/view"
         android:layout_centerHorizontal="true"
-        android:textStyle="bold"
+        android:layout_margin="20dp"
+        android:text="@string/instructions"
         android:textSize="25sp"
-        android:layout_margin="20dp" />
+        android:textStyle="bold" />
 
     <EditText
+        android:id="@+id/et_search_box"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:id="@+id/et_search_box"
-        android:hint="@string/search_prompt"
-        android:layout_below="@+id/textView"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_marginTop="23dp"
+        android:layout_below="@+id/textView"
         android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp" />
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="23dp"
+        android:hint="@string/search_prompt" />
 
     <RadioGroup
+        android:id="@+id/radioGroup"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_below="@+id/et_search_box"
         android:layout_alignLeft="@+id/et_search_box"
         android:layout_alignStart="@+id/et_search_box"
+        android:layout_below="@+id/et_search_box"
         android:layout_marginTop="27dp"
-        android:id="@+id/radioGroup">
+        android:orientation="vertical">
 
         <RadioButton
             android:id="@+id/rd_movie"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/movie"
-            android:checked="true" />
+            android:checked="true"
+            android:text="@string/movie" />
         <RadioButton
             android:id="@+id/rd_tvshow"
             android:layout_width="wrap_content"
@@ -64,28 +66,37 @@
     </RadioGroup>
 
     <Button
+        android:id="@+id/btn_search"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/search_button"
-        android:id="@+id/btn_search"
-        android:onClick="searchClicked"
-        android:textColor="#ffffff"
-        android:background="@color/colorPrimary"
-        android:textSize="20sp"
         android:layout_below="@+id/radioGroup"
         android:layout_centerHorizontal="true"
-        android:layout_margin="20dp" />
+        android:layout_margin="20dp"
+        android:background="@color/colorPrimary"
+        android:onClick="searchClicked"
+        android:text="@string/search_button"
+        android:textColor="#ffffff"
+        android:textSize="20sp" />
 
     <com.google.android.gms.ads.AdView
         android:id="@+id/ad_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:adSize="BANNER"
-        app:adUnitId="@string/banner_ad_unit_id"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        app:adSize="BANNER"
+        app:adUnitId="@string/banner_ad_unit_id" />
 
+    <TextView
+        android:id="@+id/netflix_info_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/btn_search"
+        android:layout_centerHorizontal="true"
+        android:clickable="true"
+        android:text="@string/netflix_info"
+        android:textColor="#0169fb" />
 
 
 </RelativeLayout>

@@ -25,4 +25,7 @@
     <string name="no_results_title">No Results</string>
     <string name="no_results_message">No results for search title found.</string>
     <string name="ok">OK</string>
+    <string name="netflix_info">Netflix is not included. Why?</string>
+    <string name="nexflix_full_text">Netflix is not currently sharing their information with new applications. Hopefully this will soon change.</string>
+    <string name="netflix_title">Netflix</string>
 </resources>
