@@ -29,6 +29,7 @@ import com.mattfred.streamit.model.Source;
 import com.mattfred.streamit.utils.Constants;
 import com.mattfred.streamit.utils.Globals;
 import com.mattfred.streamit.utils.GuideBoxAPI;
+import com.mattfred.streamit.utils.KeyboardHider;
 import com.mattfred.streamit.utils.StreamItPreferences;
 
 import java.io.InputStream;
@@ -58,6 +59,13 @@ public class MovieDetails extends AppCompatActivity implements View.OnClickListe
 
         //noinspection ConstantConditions
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        findViewById(R.id.main_layout).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                KeyboardHider.hideKeyboard(MovieDetails.this);
+            }
+        });
 
         TextView textView = (TextView) findViewById(R.id.tv_movie_title);
         textView.setText(Globals.getTitle());

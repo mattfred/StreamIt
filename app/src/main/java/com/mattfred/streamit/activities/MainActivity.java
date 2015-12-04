@@ -9,7 +9,6 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -34,6 +33,7 @@ import com.mattfred.streamit.R;
 import com.mattfred.streamit.broadcast.BroadcastUtil;
 import com.mattfred.streamit.services.ApiIntentService;
 import com.mattfred.streamit.services.ApiTask;
+import com.mattfred.streamit.utils.KeyboardHider;
 
 import io.fabric.sdk.android.Fabric;
 
@@ -45,7 +45,6 @@ public class MainActivity extends AppCompatActivity {
     private ProgressDialog progressDialog;
     private LocalBroadcastManager broadcastManager;
     private BroadcastReceiver broadcastReceiver;
-    private TextView netflixInfo;
 
     private RadioButton movieRB;
 
@@ -59,7 +58,12 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
+        findViewById(R.id.main_layout).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                KeyboardHider.hideKeyboard(MainActivity.this);
+            }
+        });
 
         mAdView = (AdView) findViewById(R.id.ad_view);
         AdRequest adRequest = new AdRequest.Builder()
@@ -70,7 +74,7 @@ public class MainActivity extends AppCompatActivity {
         searchBox = (EditText) findViewById(R.id.et_search_box);
         movieRB = (RadioButton) findViewById(R.id.rd_movie);
 
-        netflixInfo = (TextView) findViewById(R.id.netflix_info_tv);
+        TextView netflixInfo = (TextView) findViewById(R.id.netflix_info_tv);
         netflixInfo.setPaintFlags(netflixInfo.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
         netflixInfo.setOnClickListener(new View.OnClickListener() {
             @Override
