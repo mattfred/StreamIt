@@ -21,6 +21,7 @@ import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
+import com.google.common.base.Strings;
 import com.mattfred.streamit.AnalyticsTrackers;
 import com.mattfred.streamit.R;
 import com.mattfred.streamit.model.AvailableContentResults;
@@ -108,6 +109,10 @@ public class MovieDetails extends AppCompatActivity implements View.OnClickListe
 
     public void showIMDB(View view) {
         String url = "http://www.imdb.com/title/" + Globals.getImdb_id();
+        navigateToWebsite(url);
+    }
+
+    private void navigateToWebsite(String url) {
         Intent intent = new Intent(Intent.ACTION_VIEW);
         intent.setData(Uri.parse(url));
         startActivity(intent);
@@ -177,21 +182,21 @@ public class MovieDetails extends AppCompatActivity implements View.OnClickListe
     public void onClick(View v) {
         if (v.getId() == free.getId()) {
             if (Globals.isMovie()) {
-                showDialog(toStringArray(info.getFree_web_sources()));
+                showDialog(toStringArray(info.getFree_web_sources()), info.getFree_web_sources());
             } else {
-                showDialog(toStringArray(tvFree));
+                showDialog(toStringArray(tvFree), tvFree);
             }
         } else if (v.getId() == subscription.getId()) {
             if (Globals.isMovie()) {
-                showDialog(toStringArray(info.getSubscription_web_sources()));
+                showDialog(toStringArray(info.getSubscription_web_sources()), info.getSubscription_web_sources());
             } else {
-                showDialog(toStringArray(tvSubscription));
+                showDialog(toStringArray(tvSubscription), tvSubscription);
             }
         } else if (v.getId() == paid.getId()) {
             if (Globals.isMovie()) {
-                showDialog(toStringArray(info.getPurchase_web_sources()));
+                showDialog(toStringArray(info.getPurchase_web_sources()), info.getPurchase_web_sources());
             } else {
-                showDialog(toStringArray(tvPaid));
+                showDialog(toStringArray(tvPaid), tvPaid);
             }
         }
     }
@@ -199,7 +204,7 @@ public class MovieDetails extends AppCompatActivity implements View.OnClickListe
     private <T> String[] toStringArray(List<T> list) {
 
         if (list.isEmpty()) {
-            return new String[]{"No sources available"};
+            return new String[]{getString(R.string.no_sources)};
         }
 
         String[] array = new String[list.size()];
@@ -210,16 +215,19 @@ public class MovieDetails extends AppCompatActivity implements View.OnClickListe
         return array;
     }
 
-    private void showDialog(String[] array) {
+    private void showDialog(final String[] array, final List<Source> sources) {
 
         AlertDialog dialog = new AlertDialog.Builder(MovieDetails.this)
-                .setTitle("Sources")
+                .setTitle(R.string.sources_title)
                 .setItems(array, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        // don't do anything
+                        Source source = sources.get(which);
+                        if (!Strings.isNullOrEmpty(source.getLink())) {
+                            navigateToWebsite(source.getLink());
+                        }
                     }
-                }).setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                }).setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
