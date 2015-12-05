@@ -17,4 +17,8 @@ public class Constants {
     // intent constants
     public static final String SEASONS = "seasons";
     public static final String SOURCE = "source";
+    public static final String TYPE = "type";
+    public static final String FREE = "free";
+    public static final String SUBSCRIPTION = "subscription";
+    public static final String PAID = "paid";
 }

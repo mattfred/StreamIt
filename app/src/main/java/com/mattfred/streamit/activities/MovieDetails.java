@@ -187,21 +187,21 @@ public class MovieDetails extends AppCompatActivity implements View.OnClickListe
     public void onClick(View v) {
         if (v.getId() == free.getId()) {
             if (Globals.isMovie()) {
-                showDialog(toStringArray(info.getFree_web_sources()), info.getFree_web_sources());
+                showDialog(toStringArray(info.getFree_web_sources()), info.getFree_web_sources(), Constants.FREE);
             } else {
-                showDialog(toStringArray(tvFree), tvFree);
+                showDialog(toStringArray(tvFree), tvFree, Constants.FREE);
             }
         } else if (v.getId() == subscription.getId()) {
             if (Globals.isMovie()) {
-                showDialog(toStringArray(info.getSubscription_web_sources()), info.getSubscription_web_sources());
+                showDialog(toStringArray(info.getSubscription_web_sources()), info.getSubscription_web_sources(), Constants.SUBSCRIPTION);
             } else {
-                showDialog(toStringArray(tvSubscription), tvSubscription);
+                showDialog(toStringArray(tvSubscription), tvSubscription, Constants.SUBSCRIPTION);
             }
         } else if (v.getId() == paid.getId()) {
             if (Globals.isMovie()) {
-                showDialog(toStringArray(info.getPurchase_web_sources()), info.getPurchase_web_sources());
+                showDialog(toStringArray(info.getPurchase_web_sources()), info.getPurchase_web_sources(), Constants.PAID);
             } else {
-                showDialog(toStringArray(tvPaid), tvPaid);
+                showDialog(toStringArray(tvPaid), tvPaid, Constants.PAID);
             }
         }
     }
@@ -220,7 +220,7 @@ public class MovieDetails extends AppCompatActivity implements View.OnClickListe
         return array;
     }
 
-    private void showDialog(final String[] array, final List<Source> sources) {
+    private void showDialog(final String[] array, final List<Source> sources, final String type) {
 
         AlertDialog dialog = new AlertDialog.Builder(MovieDetails.this)
                 .setTitle(R.string.sources_title)
@@ -240,6 +240,7 @@ public class MovieDetails extends AppCompatActivity implements View.OnClickListe
                                 Intent intent = new Intent(MovieDetails.this, ShowSelectionActivity.class);
                                 intent.putExtra(Constants.SEASONS, seasons.size());
                                 intent.putExtra(Constants.SOURCE, source.getSource());
+                                intent.putExtra(Constants.TYPE, type);
                                 startActivity(intent);
                             }
                         }

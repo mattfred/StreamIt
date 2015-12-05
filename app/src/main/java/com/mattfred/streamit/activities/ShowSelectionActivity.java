@@ -1,11 +1,14 @@
 package com.mattfred.streamit.activities;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
 import android.widget.ExpandableListView;
 
 import com.mattfred.streamit.ProgressDialog;
@@ -22,6 +25,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 
 import retrofit.Callback;
@@ -34,6 +38,7 @@ public class ShowSelectionActivity extends AppCompatActivity {
     ExpandableListView expListView;
     List<String> listDataHeader;
     HashMap<String, List<String>> listDataChild;
+    HashMap<String, String> urlMap;
     int season;
     Handler handler;
     private ProgressDialog progressDialog;
@@ -54,6 +59,7 @@ public class ShowSelectionActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        urlMap = new HashMap<>();
 
         setupParents();
         setupChildren();
@@ -89,13 +95,36 @@ public class ShowSelectionActivity extends AppCompatActivity {
         if (listDataHeader.size() != season) {
             // get ready to get next season
             season++;
-        } else {
-            stopRepeatingTask();
-            hideProgress();
-            expListView = (ExpandableListView) findViewById(R.id.expandable_list);
-            listAdapter = new ExpandableListAdapter(this, listDataHeader, listDataChild);
-            expListView.setAdapter(listAdapter);
         }
+    }
+
+    private void setupList() {
+        stopRepeatingTask();
+
+        // remove empty seasons
+        Iterator<String> season = listDataHeader.iterator();
+        while (season.hasNext()) {
+            if (listDataChild.get(season.next()).isEmpty()) season.remove();
+        }
+
+        hideProgress();
+        expListView = (ExpandableListView) findViewById(R.id.expandable_list);
+        listAdapter = new ExpandableListAdapter(this, listDataHeader, listDataChild);
+        expListView.setAdapter(listAdapter);
+        expListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
+            @Override
+            public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
+                String episode = listDataChild.get(listDataHeader.get(groupPosition)).get(childPosition);
+                navigateToWebsite(urlMap.get(episode));
+                return false;
+            }
+        });
+    }
+
+    private void navigateToWebsite(String url) {
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setData(Uri.parse(url));
+        startActivity(intent);
     }
 
     private void showProgress(String message) {
@@ -117,20 +146,30 @@ public class ShowSelectionActivity extends AppCompatActivity {
 
     private void getShowEpisodeInfo() {
         final int thisSeason = season;
+        final boolean lastSeason = season == getIntent().getIntExtra(Constants.SEASONS, 0);
         String region = StreamItPreferences.getString(ShowSelectionActivity.this, Constants.REGION_US, Constants.REGION_US);
         String apiKey = getString(R.string.apiKey);
 
-        String source = getIntent().getStringExtra(Constants.SOURCE);
+        final String source = getIntent().getStringExtra(Constants.SOURCE);
+        final String type = getIntent().getStringExtra(Constants.TYPE);
         GuideBoxAPI.getAPIService().getAvailableEpisodes(region, apiKey, String.valueOf(Globals.getId()),
                 season, source, new Callback<ShowEpisodeResults>() {
                     @Override
                     public void success(ShowEpisodeResults results, Response response) {
                         List<String> episodes = new ArrayList<>();
-                        List<ShowEpisode> sorted = sortEpisodes(results.getResults());
-                        for (ShowEpisode episode : sorted) {
-                            episodes.add(String.valueOf(episode.getEpisode_number()) + ": " + episode.getTitle());
+                        if (results.getResults().isEmpty()) {
+                            listDataChild.put(listDataHeader.get(thisSeason - 1), episodes);
+                        } else {
+                            List<ShowEpisode> sorted = sortEpisodes(results.getResults());
+                            for (ShowEpisode episode : sorted) {
+                                String title = String.valueOf(episode.getEpisode_number()) + ": " + episode.getTitle();
+                                episodes.add(title);
+                                String url = getUrl(episode, type);
+                                urlMap.put(title, url);
+                            }
+                            listDataChild.put(listDataHeader.get(thisSeason - 1), episodes);
                         }
-                        listDataChild.put(listDataHeader.get(thisSeason - 1), episodes);
+                        if (lastSeason) setupList();
                     }
 
                     @Override
@@ -138,6 +177,19 @@ public class ShowSelectionActivity extends AppCompatActivity {
                         error.printStackTrace();
                     }
                 });
+    }
+
+    private String getUrl(ShowEpisode episode, String type) {
+        if (type.equalsIgnoreCase(Constants.FREE)) {
+            return episode.getFree_web_sources().get(0).getLink();
+        }
+        if (type.equalsIgnoreCase(Constants.SUBSCRIPTION)) {
+            return episode.getSubscription_web_sources().get(0).getLink();
+        }
+        if (type.equalsIgnoreCase(Constants.PAID)) {
+            return episode.getPurchase_web_sources().get(0).getLink();
+        }
+        return "";
     }
 
     private List<ShowEpisode> sortEpisodes(List<ShowEpisode> episodes) {
