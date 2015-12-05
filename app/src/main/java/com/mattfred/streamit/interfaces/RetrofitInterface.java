@@ -4,6 +4,7 @@ import com.mattfred.streamit.model.AvailableContentResults;
 import com.mattfred.streamit.model.MovieInfo;
 import com.mattfred.streamit.model.MovieResult;
 import com.mattfred.streamit.model.SeasonResults;
+import com.mattfred.streamit.model.ShowEpisodeResults;
 import com.mattfred.streamit.model.ShowResult;
 import com.mattfred.streamit.model.SourceResult;
 
@@ -38,4 +39,9 @@ public interface RetrofitInterface {
     @GET("/{region}/{apiKey}/show/{id}/seasons")
     void getShowSeasons(@Path("region") String region, @Path("apiKey") String apiKey,
                         @Path("id") String id, Callback<SeasonResults> cb);
+
+    @GET("/{region}/{apiKey}/show/{id}/episodes/{season}/0/100/{source}/web/true")
+    void getAvailableEpisodes(@Path("region") String region, @Path("apiKey") String apiKey,
+                              @Path("id") String id, @Path("season") int season,
+                              @Path("source") String source, Callback<ShowEpisodeResults> cb);
 }

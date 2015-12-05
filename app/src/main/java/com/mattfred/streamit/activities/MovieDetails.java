@@ -54,6 +54,7 @@ public class MovieDetails extends AppCompatActivity implements View.OnClickListe
     private List<Source> tvPaid, tvSubscription, tvFree;
     private ProgressBar progressBar;
     private List<Season> seasons;
+    private Source source;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -226,16 +227,21 @@ public class MovieDetails extends AppCompatActivity implements View.OnClickListe
                 .setItems(array, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        Source source = sources.get(which);
+                        source = sources.get(which);
                         if (Globals.isMovie()) {
                             if (!Strings.isNullOrEmpty(source.getLink())) {
                                 navigateToWebsite(source.getLink());
                             }
                         } else {
-                            Intent intent = new Intent(MovieDetails.this, ShowSelectionActivity.class);
-                            intent.putExtra(Constants.SEASONS, seasons.size());
-                            intent.putExtra(Constants.SOURCE, source.getSource());
-                            startActivity(intent);
+
+                            if (seasons == null || seasons.isEmpty()) {
+                                getShowSeasons(true);
+                            } else {
+                                Intent intent = new Intent(MovieDetails.this, ShowSelectionActivity.class);
+                                intent.putExtra(Constants.SEASONS, seasons.size());
+                                intent.putExtra(Constants.SOURCE, source.getSource());
+                                startActivity(intent);
+                            }
                         }
                     }
                 }).setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
@@ -278,7 +284,7 @@ public class MovieDetails extends AppCompatActivity implements View.OnClickListe
                 handler.postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        getShowSeasons();
+                        getShowSeasons(false);
                     }
                 }, 1000);
             }
@@ -290,7 +296,7 @@ public class MovieDetails extends AppCompatActivity implements View.OnClickListe
         });
     }
 
-    private void getShowSeasons() {
+    private void getShowSeasons(final boolean startIntent) {
         String region = StreamItPreferences.getString(MovieDetails.this, Constants.REGION_US, Constants.REGION_US);
         String apiKey = getString(R.string.apiKey);
 
@@ -298,6 +304,12 @@ public class MovieDetails extends AppCompatActivity implements View.OnClickListe
             @Override
             public void success(SeasonResults seasonResults, Response response) {
                 seasons = seasonResults.getResults();
+                if (startIntent) {
+                    Intent intent = new Intent(MovieDetails.this, ShowSelectionActivity.class);
+                    intent.putExtra(Constants.SEASONS, seasons.size());
+                    intent.putExtra(Constants.SOURCE, source.getSource());
+                    startActivity(intent);
+                }
             }
 
             @Override

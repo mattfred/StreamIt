@@ -19,8 +19,7 @@ import java.util.List;
 public class ExpandableListAdapter extends BaseExpandableListAdapter {
 
     private Context context;
-    private List<String> listDataHeader; // header titles
-    // child data in format of header title, child title
+    private List<String> listDataHeader;
     private HashMap<String, List<String>> listDataChild;
 
     public ExpandableListAdapter(Context context, List<String> listDataHeader,
@@ -39,6 +38,10 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
     public int getChildrenCount(int groupPosition) {
         return this.listDataChild.get(this.listDataHeader.get(groupPosition))
                 .size();
+    }
+
+    public void addChild(String key, List<String> contents) {
+        listDataChild.put(key, contents);
     }
 
     @Override
@@ -71,9 +74,9 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
     public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
         String headerTitle = (String) getGroup(groupPosition);
         if (convertView == null) {
-            LayoutInflater infalInflater = (LayoutInflater) this.context
+            LayoutInflater infalater = (LayoutInflater) this.context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = infalInflater.inflate(R.layout.list_group, null);
+            convertView = infalater.inflate(R.layout.list_group, parent, false);
         }
 
         TextView lblListHeader = (TextView) convertView
@@ -89,13 +92,13 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         final String childText = (String) getChild(groupPosition, childPosition);
 
         if (convertView == null) {
-            LayoutInflater infalInflater = (LayoutInflater) this.context
+            LayoutInflater inflater = (LayoutInflater) this.context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = infalInflater.inflate(R.layout.list_item, parent, false);
+            convertView = inflater.inflate(R.layout.list_item, parent, false);
         }
 
         TextView txtListChild = (TextView) convertView
-                .findViewById(R.id.list_header);
+                .findViewById(R.id.list_item);
 
         txtListChild.setText(childText);
         return convertView;

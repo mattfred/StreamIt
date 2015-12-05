@@ -15,6 +15,8 @@ public class Globals {
     private static String imdb_id;
     private static int id;
     private static boolean isMovie;
+    private static String source;
+    private static int season;
 
     private static List<SubscriptionSource> sources;
 
@@ -72,5 +74,21 @@ public class Globals {
 
     public static void setIsMovie(boolean isMovie) {
         Globals.isMovie = isMovie;
+    }
+
+    public static String getSource() {
+        return source;
+    }
+
+    public static void setSource(String source) {
+        Globals.source = source;
+    }
+
+    public static int getSeason() {
+        return season;
+    }
+
+    public static void setSeason(int season) {
+        Globals.season = season;
     }
 }
