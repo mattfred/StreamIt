@@ -12,6 +12,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ExpandableListView;
+import android.widget.Toast;
 
 import com.mattfred.streamit.ProgressDialog;
 import com.mattfred.streamit.R;
@@ -197,6 +198,8 @@ public class ShowSelectionActivity extends AppCompatActivity {
                     @Override
                     public void failure(RetrofitError error) {
                         error.printStackTrace();
+                        hideProgress();
+                        Toast.makeText(ShowSelectionActivity.this, R.string.generic_error, Toast.LENGTH_LONG).show();
                     }
                 });
     }

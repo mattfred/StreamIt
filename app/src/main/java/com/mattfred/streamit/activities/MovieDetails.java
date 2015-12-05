@@ -18,6 +18,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
@@ -280,6 +281,7 @@ public class MovieDetails extends AppCompatActivity implements View.OnClickListe
             @Override
             public void failure(RetrofitError error) {
                 error.printStackTrace();
+                Toast.makeText(MovieDetails.this, R.string.generic_error, Toast.LENGTH_LONG).show();
             }
         });
     }
@@ -305,6 +307,7 @@ public class MovieDetails extends AppCompatActivity implements View.OnClickListe
             @Override
             public void failure(RetrofitError error) {
                 error.printStackTrace();
+                Toast.makeText(MovieDetails.this, R.string.generic_error, Toast.LENGTH_LONG).show();
             }
         });
     }
@@ -328,6 +331,7 @@ public class MovieDetails extends AppCompatActivity implements View.OnClickListe
             @Override
             public void failure(RetrofitError error) {
                 error.printStackTrace();
+                Toast.makeText(MovieDetails.this, R.string.generic_error, Toast.LENGTH_LONG).show();
             }
         });
     }
