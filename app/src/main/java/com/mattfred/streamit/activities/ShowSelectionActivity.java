@@ -202,13 +202,13 @@ public class ShowSelectionActivity extends AppCompatActivity {
     }
 
     private String getUrl(ShowEpisode episode, String type) {
-        if (type.equalsIgnoreCase(Constants.FREE)) {
+        if (Constants.FREE.equalsIgnoreCase(type)) {
             return episode.getFree_web_sources().get(0).getLink();
         }
-        if (type.equalsIgnoreCase(Constants.SUBSCRIPTION)) {
+        if (Constants.SUBSCRIPTION.equalsIgnoreCase(type)) {
             return episode.getSubscription_web_sources().get(0).getLink();
         }
-        if (type.equalsIgnoreCase(Constants.PAID)) {
+        if (Constants.PAID.equalsIgnoreCase(type)) {
             return episode.getPurchase_web_sources().get(0).getLink();
         }
         return "";
