@@ -19,6 +19,8 @@ import com.mattfred.streamit.utils.GuideBoxAPI;
 import com.mattfred.streamit.utils.StreamItPreferences;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 
@@ -123,8 +125,9 @@ public class ShowSelectionActivity extends AppCompatActivity {
                 season, source, new Callback<ShowEpisodeResults>() {
                     @Override
                     public void success(ShowEpisodeResults results, Response response) {
-                        List<String> episodes = new ArrayList<String>();
-                        for (ShowEpisode episode : results.getResults()) {
+                        List<String> episodes = new ArrayList<>();
+                        List<ShowEpisode> sorted = sortEpisodes(results.getResults());
+                        for (ShowEpisode episode : sorted) {
                             episodes.add(String.valueOf(episode.getEpisode_number()) + ": " + episode.getTitle());
                         }
                         listDataChild.put(listDataHeader.get(thisSeason - 1), episodes);
@@ -135,6 +138,22 @@ public class ShowSelectionActivity extends AppCompatActivity {
                         error.printStackTrace();
                     }
                 });
+    }
+
+    private List<ShowEpisode> sortEpisodes(List<ShowEpisode> episodes) {
+        Collections.sort(episodes, new Comparator<ShowEpisode>() {
+            @Override
+            public int compare(ShowEpisode lhs, ShowEpisode rhs) {
+                return compare(lhs.getEpisode_number(), rhs.getEpisode_number());
+            }
+
+            private int compare(int first, int second) {
+                if (first < second) return -1;
+                if (first > second) return 1;
+                else return 0;
+            }
+        });
+        return episodes;
     }
 
 }
