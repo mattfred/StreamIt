@@ -31,4 +31,5 @@
     <string name="no_sources">No sources available</string>
     <string name="sources_title">Sources</string>
     <string name="title_activity_show_selection">ShowSelectionActivity</string>
+    <string name="new_search">New Search</string>
 </resources>

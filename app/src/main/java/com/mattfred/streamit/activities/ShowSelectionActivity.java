@@ -8,6 +8,8 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ExpandableListView;
 
@@ -63,6 +65,26 @@ public class ShowSelectionActivity extends AppCompatActivity {
 
         setupParents();
         setupChildren();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == android.R.id.home) {
+            onBackPressed();
+        }
+        if (id == R.id.search) {
+            startActivity(new Intent(this, MainActivity.class));
+            finish();
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     private void setupParents() {
@@ -157,7 +179,7 @@ public class ShowSelectionActivity extends AppCompatActivity {
                     @Override
                     public void success(ShowEpisodeResults results, Response response) {
                         List<String> episodes = new ArrayList<>();
-                        if (results.getResults().isEmpty()) {
+                        if (results.getResults() == null || results.getResults().isEmpty()) {
                             listDataChild.put(listDataHeader.get(thisSeason - 1), episodes);
                         } else {
                             List<ShowEpisode> sorted = sortEpisodes(results.getResults());
