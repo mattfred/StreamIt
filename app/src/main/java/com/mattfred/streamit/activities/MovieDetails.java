@@ -220,7 +220,7 @@ public class MovieDetails extends AppCompatActivity implements View.OnClickListe
 
     private <T> String[] toStringArray(List<T> list) {
 
-        if (list.isEmpty()) {
+        if (list == null || list.isEmpty()) {
             return new String[]{getString(R.string.no_sources)};
         }
 
