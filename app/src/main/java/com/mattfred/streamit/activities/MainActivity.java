@@ -13,7 +13,9 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.TextView;
@@ -70,6 +72,16 @@ public class MainActivity extends AppCompatActivity {
         mAdView.loadAd(adRequest);
 
         searchBox = (EditText) findViewById(R.id.et_search_box);
+        searchBox.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                    searchClicked(v);
+                    return true;
+                }
+                return false;
+            }
+        });
         movieRB = (RadioButton) findViewById(R.id.rd_movie);
 
         TextView netflixInfo = (TextView) findViewById(R.id.netflix_info_tv);
