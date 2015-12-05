@@ -168,7 +168,7 @@ public class ShowSelectionActivity extends AppCompatActivity {
 
     private void getShowEpisodeInfo() {
         final int thisSeason = season;
-        final boolean lastSeason = season == getIntent().getIntExtra(Constants.SEASONS, 0);
+        final boolean lastSeason = (season == getIntent().getIntExtra(Constants.SEASONS, 0));
         String region = StreamItPreferences.getString(ShowSelectionActivity.this, Constants.REGION_US, Constants.REGION_US);
         String apiKey = getString(R.string.apiKey);
 
