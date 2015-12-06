@@ -320,9 +320,9 @@ public class MovieDetails extends AppCompatActivity implements View.OnClickListe
             @Override
             public void success(SeasonResults seasonResults, Response response) {
                 seasons = seasonResults.getResults();
+                Globals.setSeasons(seasonResults.getResults());
                 if (startIntent) {
                     Intent intent = new Intent(MovieDetails.this, ShowSelectionActivity.class);
-                    intent.putExtra(Constants.SEASONS, seasons.size());
                     intent.putExtra(Constants.SOURCE, source.getSource());
                     startActivity(intent);
                 }

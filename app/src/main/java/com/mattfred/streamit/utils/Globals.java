@@ -1,5 +1,6 @@
 package com.mattfred.streamit.utils;
 
+import com.mattfred.streamit.model.Season;
 import com.mattfred.streamit.model.SubscriptionSource;
 
 import java.util.List;
@@ -17,6 +18,7 @@ public class Globals {
     private static boolean isMovie;
     private static String source;
     private static int season;
+    private static List<Season> seasons;
 
     private static List<SubscriptionSource> sources;
 
@@ -90,5 +92,13 @@ public class Globals {
 
     public static void setSeason(int season) {
         Globals.season = season;
+    }
+
+    public static List<Season> getSeasons() {
+        return seasons;
+    }
+
+    public static void setSeasons(List<Season> seasons) {
+        Globals.seasons = seasons;
     }
 }

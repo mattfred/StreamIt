@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -17,6 +18,7 @@ import android.widget.Toast;
 import com.mattfred.streamit.ProgressDialog;
 import com.mattfred.streamit.R;
 import com.mattfred.streamit.adapters.ExpandableListAdapter;
+import com.mattfred.streamit.model.Season;
 import com.mattfred.streamit.model.ShowEpisode;
 import com.mattfred.streamit.model.ShowEpisodeResults;
 import com.mattfred.streamit.utils.Constants;
@@ -37,12 +39,16 @@ import retrofit.client.Response;
 
 public class ShowSelectionActivity extends AppCompatActivity {
 
+    private static final String TAG = "ShowSelectionActivity";
+
     ExpandableListAdapter listAdapter;
     ExpandableListView expListView;
     List<String> listDataHeader;
     HashMap<String, List<String>> listDataChild;
     HashMap<String, String> urlMap;
-    int season;
+    int seasonCount;
+    Season currentSeason;
+    List<Season> seasonsList;
     Handler handler;
     private ProgressDialog progressDialog;
     // run this ever second for each season
@@ -50,7 +56,7 @@ public class ShowSelectionActivity extends AppCompatActivity {
         @Override
         public void run() {
             getShowEpisodeInfo();
-            handler.postDelayed(runnable, 1000);
+            handler.postDelayed(runnable, 1100);
             rinseAndRepeat();
         }
     };
@@ -63,6 +69,12 @@ public class ShowSelectionActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         urlMap = new HashMap<>();
+
+        seasonsList = Globals.getSeasons();
+        // first position
+        seasonCount = 0;
+        // first season
+        currentSeason = seasonsList.get(seasonCount);
 
         setupParents();
         setupChildren();
@@ -90,10 +102,12 @@ public class ShowSelectionActivity extends AppCompatActivity {
 
     private void setupParents() {
         listDataHeader = new ArrayList<>();
-        int seasons = getIntent().getIntExtra(Constants.SEASONS, 0);
-        for (int i = 0; i < seasons; i++) {
-            listDataHeader.add("Season " + (i + 1));
+        Log.d(TAG, "Seasons: " + seasonsList.size());
+        for (int i = 0; i < seasonsList.size(); i++) {
+            Log.d(TAG, "Adding parent " + seasonsList.get(i).toString() + " in position " + i);
+            listDataHeader.add(i, seasonsList.get(i).toString());
         }
+        Log.d(TAG, "Header size: " + listDataHeader.size());
     }
 
     private void setupChildren() {
@@ -104,7 +118,6 @@ public class ShowSelectionActivity extends AppCompatActivity {
 
         // start at season 1
         if (listDataHeader.size() != 0) {
-            season = 1;
             runnable.run();
         }
     }
@@ -115,9 +128,10 @@ public class ShowSelectionActivity extends AppCompatActivity {
 
     private void rinseAndRepeat() {
         // if season is the same as the size then all seasons are got
-        if (listDataHeader.size() != season) {
+        if (listDataHeader.size() != (seasonCount + 1)) {
             // get ready to get next season
-            season++;
+            seasonCount++;
+            currentSeason = seasonsList.get(seasonCount);
         }
     }
 
@@ -127,7 +141,9 @@ public class ShowSelectionActivity extends AppCompatActivity {
         // remove empty seasons
         Iterator<String> season = listDataHeader.iterator();
         while (season.hasNext()) {
-            if (listDataChild.get(season.next()).isEmpty()) season.remove();
+            String next = season.next();
+            if (listDataChild.get(next) == null || listDataChild.get(next).isEmpty())
+                season.remove();
         }
 
         hideProgress();
@@ -168,29 +184,35 @@ public class ShowSelectionActivity extends AppCompatActivity {
     }
 
     private void getShowEpisodeInfo() {
-        final int thisSeason = season;
-        final boolean lastSeason = (season == getIntent().getIntExtra(Constants.SEASONS, 0));
+        final int localCount = seasonCount;
+        final Season localSeason = currentSeason;
+        final boolean lastSeason = ((localCount + 1) == seasonsList.size());
+        Log.d(TAG, "Getting children for " + localSeason.toString());
+        Log.d(TAG, "Last season: " + lastSeason);
+
         String region = StreamItPreferences.getString(ShowSelectionActivity.this, Constants.REGION_US, Constants.REGION_US);
         String apiKey = getString(R.string.apiKey);
 
         final String source = getIntent().getStringExtra(Constants.SOURCE);
         final String type = getIntent().getStringExtra(Constants.TYPE);
+
         GuideBoxAPI.getAPIService().getAvailableEpisodes(region, apiKey, String.valueOf(Globals.getId()),
-                season, source, new Callback<ShowEpisodeResults>() {
+                localSeason.getSeason_number(), source, new Callback<ShowEpisodeResults>() {
                     @Override
                     public void success(ShowEpisodeResults results, Response response) {
                         List<String> episodes = new ArrayList<>();
-                        if (results.getResults() == null || results.getResults().isEmpty()) {
-                            listDataChild.put(listDataHeader.get(thisSeason - 1), episodes);
-                        } else {
-                            List<ShowEpisode> sorted = sortEpisodes(results.getResults());
-                            for (ShowEpisode episode : sorted) {
-                                String title = String.valueOf(episode.getEpisode_number()) + ": " + episode.getTitle();
-                                episodes.add(title);
-                                String url = getUrl(episode, type);
-                                urlMap.put(title, url);
-                            }
-                            listDataChild.put(listDataHeader.get(thisSeason - 1), episodes);
+                        List<ShowEpisode> sorted = sortEpisodes(results.getResults());
+                        for (ShowEpisode episode : sorted) {
+                            String title = String.valueOf(episode.getEpisode_number()) + ": " + episode.getTitle();
+                            episodes.add(title);
+                            String url = getUrl(episode, type);
+                            urlMap.put(title, url);
+                        }
+                        try {
+                            listDataChild.put(listDataHeader.get(localCount), episodes);
+                            Log.d(TAG, "Adding filled children to " + listDataHeader.get(localCount));
+                        } catch (IndexOutOfBoundsException outOfBounds) {
+                            listDataChild.put(listDataHeader.get(listDataHeader.size() - 1), episodes);
                         }
                         if (lastSeason) setupList();
                     }
@@ -198,8 +220,11 @@ public class ShowSelectionActivity extends AppCompatActivity {
                     @Override
                     public void failure(RetrofitError error) {
                         error.printStackTrace();
-                        hideProgress();
-                        Toast.makeText(ShowSelectionActivity.this, R.string.generic_error, Toast.LENGTH_LONG).show();
+                        // ignore server errors
+                        if (error.getResponse().getStatus() < 500) {
+                            hideProgress();
+                            Toast.makeText(ShowSelectionActivity.this, R.string.generic_error, Toast.LENGTH_LONG).show();
+                        }
                     }
                 });
     }
