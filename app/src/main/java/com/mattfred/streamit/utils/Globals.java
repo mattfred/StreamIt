@@ -1,5 +1,7 @@
 package com.mattfred.streamit.utils;
 
+import android.content.Intent;
+
 import com.mattfred.streamit.model.Season;
 import com.mattfred.streamit.model.SubscriptionSource;
 
@@ -19,8 +21,17 @@ public class Globals {
     private static String source;
     private static int season;
     private static List<Season> seasons;
-
     private static List<SubscriptionSource> sources;
+
+    public static Intent getShareIntent() {
+        Intent sendIntent = new Intent();
+        sendIntent.setAction(Intent.ACTION_SEND);
+        sendIntent.putExtra(Intent.EXTRA_TITLE, "StreamIt");
+
+        sendIntent.putExtra(Intent.EXTRA_TEXT, Constants.PLAY_LINK);
+        sendIntent.setType("text/plain");
+        return sendIntent;
+    }
 
     public static List<Object> getResults() {
         return results;

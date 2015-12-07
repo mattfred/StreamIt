@@ -14,6 +14,8 @@ public class Constants {
     // available regions
     public static final String REGION_US = "us";
 
+    public static final String PLAY_LINK = "Check out this great Android app! https://play.google.com/store/apps/details?id=com.mattfred.streamit";
+
     // intent constants
     public static final String SEASONS = "seasons";
     public static final String SOURCE = "source";

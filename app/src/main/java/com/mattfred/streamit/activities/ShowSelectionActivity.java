@@ -97,6 +97,10 @@ public class ShowSelectionActivity extends AppCompatActivity {
             startActivity(new Intent(this, MainActivity.class));
             finish();
         }
+
+        if (id == R.id.share) {
+            startActivity(Globals.getShareIntent());
+        }
         return super.onOptionsItemSelected(item);
     }
 

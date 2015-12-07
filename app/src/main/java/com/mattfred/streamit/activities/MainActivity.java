@@ -14,6 +14,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
@@ -33,6 +35,7 @@ import com.mattfred.streamit.R;
 import com.mattfred.streamit.broadcast.BroadcastUtil;
 import com.mattfred.streamit.services.ApiIntentService;
 import com.mattfred.streamit.services.ApiTask;
+import com.mattfred.streamit.utils.Globals;
 import com.mattfred.streamit.utils.KeyboardHider;
 
 import io.fabric.sdk.android.Fabric;
@@ -94,6 +97,22 @@ public class MainActivity extends AppCompatActivity {
         });
 
         registerReceiver();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.second_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.share) {
+            startActivity(Globals.getShareIntent());
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     private void showNetflixDialog() {
